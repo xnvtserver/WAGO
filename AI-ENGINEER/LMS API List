@@ -1,0 +1,153 @@
+
+
+# 🌐 Comprehensive LMS API List
+
+---
+
+## 🔑 **Auth & User Management (Shared)**
+
+* `POST /auth/register` → create user (role-based: student/faculty/staff/admin)
+* `POST /auth/login` → login, returns JWT
+* `POST /auth/logout` → logout, invalidate token
+* `GET /auth/me` → current user profile
+* `PUT /auth/change-password` → update password
+* `POST /auth/forgot-password` → request reset
+* `POST /auth/reset-password` → reset with token
+* `PUT /users/:id` → update profile (avatar, phone, settings)
+* `GET /users/:id` → get user profile by ID
+* `GET /users?role=faculty|student|staff|admin` → filter by role
+
+---
+
+## 📚 **Courses & Enrollment**
+
+* `POST /courses` → create course (faculty/admin)
+* `GET /courses` → list all courses (role filtered)
+* `GET /courses/:id` → course details
+* `PUT /courses/:id` → update course info (faculty/admin)
+* `DELETE /courses/:id` → delete course
+* `POST /courses/:id/enroll` → student enrollment
+* `DELETE /courses/:id/enroll/:studentId` → unenroll student
+* `GET /courses/:id/students` → enrolled students
+* `GET /courses/:id/progress/:studentId` → student’s course progress
+
+---
+
+## 📝 **Assignments & Exams**
+
+* `POST /courses/:id/assignments` → create assignment
+* `GET /courses/:id/assignments` → list course assignments
+* `GET /assignments/:id` → assignment details
+* `PUT /assignments/:id` → update assignment
+* `DELETE /assignments/:id` → delete assignment
+
+### Submissions
+
+* `POST /assignments/:id/submit` → student submission (file/text)
+* `GET /assignments/:id/submissions` → all submissions (faculty view)
+* `GET /assignments/:id/submissions/:studentId` → single student submission
+* `PUT /assignments/:id/grade/:studentId` → faculty grading
+
+### Exams
+
+* `POST /courses/:id/exams` → create exam
+* `GET /courses/:id/exams` → list exams
+* `GET /exams/:id` → exam details
+* `POST /exams/:id/submit` → student submits answers
+* `PUT /exams/:id/grade/:studentId` → grading
+
+---
+
+## 🤖 **AI Assistant**
+
+* `GET /ai/tips/:studentId` → personalized study tips
+* `GET /ai/insights/:facultyId` → teaching insights (at-risk students)
+* `GET /ai/admin-insights` → predictive analytics (dropouts, efficiency, resources)
+
+---
+
+## 📅 **Calendar & Events**
+
+* `POST /calendar/events` → create event (faculty/staff/admin)
+* `GET /calendar/events` → fetch all events (role filtered)
+* `GET /calendar/events/:id` → event details
+* `PUT /calendar/events/:id` → update event
+* `DELETE /calendar/events/:id` → delete event
+
+---
+
+## 📊 **Analytics**
+
+### Student
+
+* `GET /analytics/student/:id` → attendance, marks, engagement score
+
+### Faculty
+
+* `GET /analytics/faculty/:id` → class performance, grading workload
+
+### Staff
+
+* `GET /analytics/staff/:id` → ticket resolution, support metrics
+
+### Admin
+
+* `GET /analytics/admin/overview` → institutional overview (enrollment, courses, finance)
+* `GET /analytics/admin/reports` → deep reports (completion rates, engagement heatmaps)
+
+---
+
+## 💬 **Messaging & Notifications**
+
+* `POST /messages` → send message (student ↔ faculty ↔ staff)
+* `GET /messages` → inbox (filter by conversation)
+* `GET /messages/:id` → single message thread
+* `POST /notifications` → create notification (system, deadline reminder)
+* `GET /notifications` → fetch notifications by user
+
+---
+
+## 🛠️ **Staff-Specific (Tasks & Support)**
+
+* `POST /tasks` → create staff task
+* `GET /tasks` → list tasks (staff/admin)
+* `PUT /tasks/:id` → update task status
+* `DELETE /tasks/:id` → delete task
+* `POST /support/tickets` → student/faculty raises ticket
+* `GET /support/tickets` → staff/admin view tickets
+* `PUT /support/tickets/:id` → update ticket (status: open/in-progress/resolved)
+
+---
+
+## 🏛️ **Admin APIs**
+
+* `POST /admin/broadcast` → send announcement to all users
+* `GET /admin/overview` → institutional metrics (students, faculty, finance)
+* `GET /admin/approvals` → pending requests (staff/faculty leave, course requests)
+* `PUT /admin/approvals/:id` → approve/reject request
+* `POST /admin/users` → create new user (faculty/staff/student)
+* `PUT /admin/users/:id/role` → change role
+* `DELETE /admin/users/:id` → delete user
+* `POST /admin/finance/records` → log transaction (fees, salaries)
+* `GET /admin/finance/reports` → finance summary
+
+---
+
+## 📂 **Resources (Digital Library, Documents)**
+
+* `POST /resources` → upload document/library item
+* `GET /resources` → list resources
+* `GET /resources/:id` → resource details
+* `PUT /resources/:id` → update resource metadata
+* `DELETE /resources/:id` → remove resource
+
+---
+
+# 🚀 Example End-to-End Flow
+
+* **Student** logs in → sees enrolled courses, assignments, progress, AI tips.
+* **Faculty** creates assignments → students submit → faculty grades → reflected in student analytics.
+* **Staff** manages tickets & resources → resolves issues → escalates to admin if needed.
+* **Admin** monitors everything → approves requests → runs reports → broadcasts announcements.
+
+---
