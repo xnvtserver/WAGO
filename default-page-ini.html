@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoGlow | Premium Car & Bike Wash Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #10b981;
+            --accent: #8b5cf6;
+            --dark: #1e293b;
+            --light: #f8fafc;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f1f5f9;
+            scroll-behavior: smooth;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+        }
+        
+        .service-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+        }
+        
+        .service-card.selected {
+            border-color: var(--primary);
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+        
+        .radio-custom {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .radio-custom:checked {
+            border-color: var(--primary);
+        }
+        
+        .radio-custom:checked::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+        }
+        
+        .checkbox-custom {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #cbd5e1;
+            border-radius: 4px;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .checkbox-custom:checked {
+            border-color: var(--primary);
+            background-color: var(--primary);
+        }
+        
+        .checkbox-custom:checked::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            color: white;
+            font-size: 12px;
+            top: 2px;
+            left: 3px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -10px rgba(59, 130, 246, 0.5);
+        }
+        
+        .input-field {
+            transition: all 0.3s;
+            border: 1px solid #cbd5e1;
+        }
+        
+        .input-field:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        
+        .time-slot {
+            transition: all 0.3s;
+            border: 1px solid #cbd5e1;
+        }
+        
+        .time-slot:hover, .time-slot.selected {
+            border-color: var(--primary);
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+        
+        .time-slot.selected {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-color: var(--primary);
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Navbar styles */
+        .navbar {
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Hero section */
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(139, 92, 246, 0.8)), url('https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* Feature icons */
+        .feature-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Mobile menu */
+        .mobile-menu {
+            transition: all 0.3s ease;
+            transform: translateX(100%);
+        }
+        
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation Bar -->
+    <nav class="navbar fixed top-0 w-full z-50 py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <i class="fas fa-car-side text-2xl mr-2 gradient-text"></i>
+                <span class="text-2xl font-bold gradient-text">AutoGlow</span>
+            </div>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="text-slate-700 hover:text-blue-600 font-medium">Home</a>
+                <a href="#services" class="text-slate-700 hover:text-blue-600 font-medium">Services</a>
+                <a href="#booking" class="text-slate-700 hover:text-blue-600 font-medium">Book Now</a>
+                <a href="#features" class="text-slate-700 hover:text-blue-600 font-medium">Why Choose Us</a>
+                <a href="#contact" class="text-slate-700 hover:text-blue-600 font-medium">Contact</a>
+            </div>
+            
+            <!-- Auth Buttons -->
+            <div class="hidden md:flex space-x-4">
+                <a href="http://192.168.0.101:5177/login" class="text-slate-700 hover:text-blue-600 font-medium">Login</a>
+                <a href="http://192.168.0.101:5177/register" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition">Register</a>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobileMenuButton" class="md:hidden text-slate-700 text-xl">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 bg-white shadow-lg p-6">
+            <div class="flex justify-between items-center mb-8">
+                <div class="flex items-center">
+                    <i class="fas fa-car-side text-xl mr-2 gradient-text"></i>
+                    <span class="text-xl font-bold gradient-text">AutoGlow</span>
+                </div>
+                <button id="closeMobileMenu" class="text-slate-700 text-xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-6">
+                <a href="#home" class="block text-slate-700 hover:text-blue-600 font-medium">Home</a>
+                <a href="#services" class="block text-slate-700 hover:text-blue-600 font-medium">Services</a>
+                <a href="#booking" class="block text-slate-700 hover:text-blue-600 font-medium">Book Now</a>
+                <a href="#features" class="block text-slate-700 hover:text-blue-600 font-medium">Why Choose Us</a>
+                <a href="#contact" class="block text-slate-700 hover:text-blue-600 font-medium">Contact</a>
+                
+                <div class="pt-4 border-t border-slate-200">
+                    <a href="http://192.168.0.101:5177/login" class="block text-slate-700 hover:text-blue-600 font-medium mb-4">Login</a>
+                    <a href="http://192.168.0.101:5177/register" class="block bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-center hover:bg-blue-700 transition">Register</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-bg text-white pt-24 pb-20 md:pt-32 md:pb-28">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">Premium Vehicle Care Services</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">Professional car wash, bike wash, and detailing services with eco-friendly products and convenient scheduling.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#booking" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-bold text-lg hover:bg-blue-50 transition inline-block">Book Now</a>
+                <a href="#services" class="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-white/10 transition inline-block">Our Services</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Our Services</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">From basic washes to premium detailing, we offer a wide range of services to keep your vehicles looking their best.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Car Wash Service -->
+                <div class="service-card glass-card p-6 rounded-xl text-center">
+                    <div class="bg-blue-100 text-blue-600 p-4 rounded-full inline-block mb-4">
+                        <i class="fas fa-car text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">Car Wash</h3>
+                    <p class="text-slate-600 mb-4">Complete exterior and interior cleaning with premium products</p>
+                    <ul class="text-left text-slate-600 space-y-2 mb-6">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Exterior Wash</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Interior Detailing</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Wax & Polish</li>
+                    </ul>
+                    <a href="#booking" class="btn-primary text-white px-6 py-2 rounded-lg font-medium inline-block">Book Now</a>
+                </div>
+                
+                <!-- Bike Wash Service -->
+                <div class="service-card glass-card p-6 rounded-xl text-center">
+                    <div class="bg-green-100 text-green-600 p-4 rounded-full inline-block mb-4">
+                        <i class="fas fa-motorcycle text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">Bike Wash</h3>
+                    <p class="text-slate-600 mb-4">Specialized cleaning for motorcycles and bicycles</p>
+                    <ul class="text-left text-slate-600 space-y-2 mb-6">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Exterior Deep Clean</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Chain Lubrication</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Protective Coating</li>
+                    </ul>
+                    <a href="#booking" class="btn-primary text-white px-6 py-2 rounded-lg font-medium inline-block">Book Now</a>
+                </div>
+                
+                <!-- Detailing Service -->
+                <div class="service-card glass-card p-6 rounded-xl text-center">
+                    <div class="bg-purple-100 text-purple-600 p-4 rounded-full inline-block mb-4">
+                        <i class="fas fa-spray-can text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">Premium Detailing</h3>
+                    <p class="text-slate-600 mb-4">Advanced cleaning and protection for your vehicle</p>
+                    <ul class="text-left text-slate-600 space-y-2 mb-6">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Engine Detailing</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Ceramic Coating</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Paint Correction</li>
+                    </ul>
+                    <a href="#booking" class="btn-primary text-white px-6 py-2 rounded-lg font-medium inline-block">Book Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="booking" class="py-16 bg-slate-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Book Your Service</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">Select your service, vehicle type, and preferred time slot for a seamless booking experience.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Booking Form -->
+                <div class="glass-card p-6 lg:p-8">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-6">Please fill in the details below to schedule your service:</h3>
+                    
+                    <form id="bookingForm">
+                        <!-- 1. Select Service Type -->
+                        <div class="mb-8">
+                            <h4 class="text-lg font-medium text-slate-800 mb-4 flex items-center">
+                                <span class="bg-blue-100 text-blue-600 rounded-full w-6 h-6 flex items-center justify-center mr-3">1</span>
+                                Select Service Type
+                            </h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="service-card p-4 rounded-lg cursor-pointer">
+                                    <input type="checkbox" name="service" value="Exterior Wash" class="checkbox-custom mr-3">
+                                    <span class="font-medium">Exterior Wash</span>
+                                    <p class="text-sm text-slate-500 mt-1">Complete exterior cleaning</p>
+                                </label>
+                                <label class="service-card p-4 rounded-lg cursor-pointer">
+                                    <input type="checkbox" name="service" value="Interior Cleaning" class="checkbox-custom mr-3">
+                                    <span class="font-medium">Interior Cleaning</span>
+                                    <p class="text-sm text-slate-500 mt-1">Detailed interior vacuum & wipe</p>
+                                </label>
+                                <label class="service-card p-4 rounded-lg cursor-pointer">
+                                    <input type="checkbox" name="service" value="Full Wash" class="checkbox-custom mr-3">
+                                    <span class="font-medium">Full Wash</span>
+                                    <p class="text-sm text-slate-500 mt-1">Exterior + Interior complete</p>
+                                </label>
+                                <label class="service-card p-4 rounded-lg cursor-pointer">
+                                    <input type="checkbox" name="service" value="Engine Detailing" class="checkbox-custom mr-3">
+                                    <span class="font-medium">Engine Detailing</span>
+                                    <p class="text-sm text-slate-500 mt-1">Engine bay cleaning</p>
+                                </label>
+                                <label class="service-card p-4 rounded-lg cursor-pointer">
+                                    <input type="checkbox" name="service" value="Wax & Polish" class="checkbox-custom mr-3">
+                                    <span class="font-medium">Wax & Polish</span>
+                                    <p class="text-sm text-slate-500 mt-1">Premium exterior protection</p>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- 2. Choose Vehicle Type -->
+                        <div class="mb-8">
+                            <h4 class="text-lg font-medium text-slate-800 mb-4 flex items-center">
+                                <span class="bg-blue-100 text-blue-600 rounded-full w-6 h-6 flex items-center justify-center mr-3">2</span>
+                                Choose Vehicle Type
+                            </h4>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
+                                    <input type="radio" name="vehicle" value="Hatchback" class="radio-custom mr-3">
+                                    <span>Hatchback</span>
+                                </label>
+                                <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
+                                    <input type="radio" name="vehicle" value="Sedan" class="radio-custom mr-3">
+                                    <span>Sedan</span>
+                                </label>
+                                <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
+                                    <input type="radio" name="vehicle" value="SUV" class="radio-custom mr-3">
+                                    <span>SUV</span>
+                                </label>
+                                <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
+                                    <input type="radio" name="vehicle" value="Luxury Car" class="radio-custom mr-3">
+                                    <span>Luxury Car</span>
+                                </label>
+                                <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
+                                    <input type="radio" name="vehicle" value="Pickup/Van" class="radio-custom mr-3">
+                                    <span>Pickup/Van</span>
+                                </label>
+                                <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
+                                    <input type="radio" name="vehicle" value="Motorcycle" class="radio-custom mr-3">
+                                    <span>Motorcycle</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- 3. Preferred Date & Time -->
+                        <div class="mb-8">
+                            <h4 class="text-lg font-medium text-slate-800 mb-4 flex items-center">
+                                <span class="bg-blue-100 text-blue-600 rounded-full w-6 h-6 flex items-center justify-center mr-3">3</span>
+                                Preferred Date & Time
+                            </h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Date</label>
+                                    <input type="date" class="input-field w-full px-4 py-3 rounded-lg">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-2">Time Slot</label>
+                                    <div class="flex flex-wrap gap-2">
+                                        <label class="time-slot px-4 py-2 rounded-lg cursor-pointer">
+                                            <input type="radio" name="time" value="9 AM – 12 PM" class="hidden">
+                                            <span>9 AM – 12 PM</span>
+                                        </label>
+                                        <label class="time-slot px-4 py-2 rounded-lg cursor-pointer">
+                                            <input type="radio" name="time" value="12 PM – 3 PM" class="hidden">
+                                            <span>12 PM – 3 PM</span>
+                                        </label>
+                                        <label class="time-slot px-4 py-2 rounded-lg cursor-pointer">
+                                            <input type="radio" name="time" value="3 PM – 6 PM" class="hidden">
+                                            <span>3 PM – 6 PM</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 4. Pickup Option -->
+                        <div class="mb-8">
+                            <h4 class="text-lg font-medium text-slate-800 mb-4 flex items-center">
+                                <span class="bg-blue-100 text-blue-600 rounded-full w-6 h-6 flex items-center justify-center mr-3">4</span>
+                                Pickup Option
+                            </h4>
+                            <div class="space-y-3">
+                                <label class="flex items-center p-4 rounded-lg border border-slate-200 cursor-pointer">
+                                    <input type="radio" name="pickup" value="Home Pickup" class="radio-custom mr-3">
+                                    <div>
+                                        <span class="font-medium">Home Pickup & Drop</span>
+                                        <p class="text-sm text-slate-500 mt-1">We'll come to your location (additional charges may apply)</p>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-4 rounded-lg border border-slate-200 cursor-pointer">
+                                    <input type="radio" name="pickup" value="Service Center" class="radio-custom mr-3">
+                                    <div>
+                                        <span class="font-medium">Bring My Vehicle to Service Center</span>
+                                        <p class="text-sm text-slate-500 mt-1">Visit our nearest service location</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- 5. Address for Service -->
+                        <div class="mb-8">
+                            <h4 class="text-lg font-medium text-slate-800 mb-4 flex items-center">
+                                <span class="bg-blue-100 text-blue-600 rounded-full w-6 h-6 flex items-center justify-center mr-3">5</span>
+                                Address for Service
+                            </h4>
+                            <textarea class="input-field w-full px-4 py-3 rounded-lg" rows="3" placeholder="Street Address, City, ZIP"></textarea>
+                        </div>
+                        
+                        <!-- 6. Contact Information -->
+                        <div class="mb-8">
+                            <h4 class="text-lg font-medium text-slate-800 mb-4 flex items-center">
+                                <span class="bg-blue-100 text-blue-600 rounded-full w-6 h-6 flex items-center justify-center mr-3">6</span>
+                                Contact Information
+                            </h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Phone Number</label>
+                                    <input type="tel" class="input-field w-full px-4 py-3 rounded-lg" placeholder="+1 (___) ___-____">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
+                                    <input type="email" class="input-field w-full px-4 py-3 rounded-lg" placeholder="your@email.com">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn-primary text-white w-full py-4 rounded-lg font-semibold flex items-center justify-center">
+                            <i class="fas fa-calendar-check mr-2"></i> Submit Booking
+                        </button>
+                        
+                        <p class="text-sm text-slate-500 mt-4 text-center">You'll receive a confirmation message shortly after booking.</p>
+                    </form>
+                </div>
+                
+                <!-- Visual Section -->
+                <div class="hidden lg:block">
+                    <div class="glass-card h-full p-8 flex flex-col justify-center">
+                        <div class="text-center mb-8">
+                            <div class="inline-block p-4 bg-blue-100 rounded-full mb-4">
+                                <i class="fas fa-sparkles text-3xl text-blue-600 animate-float"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-slate-800 mb-2">Why Choose AutoGlow?</h3>
+                            <p class="text-slate-600">Premium vehicle care with eco-friendly products</p>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="bg-blue-100 text-blue-600 p-2 rounded-lg mr-4">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-slate-800">Quality Guaranteed</h4>
+                                    <p class="text-sm text-slate-500 mt-1">We use only premium products that protect your vehicle's finish</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="bg-green-100 text-green-600 p-2 rounded-lg mr-4">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-slate-800">Eco-Friendly</h4>
+                                    <p class="text-sm text-slate-500 mt-1">Biodegradable products that are safe for the environment</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="bg-purple-100 text-purple-600 p-2 rounded-lg mr-4">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-slate-800">Quick Service</h4>
+                                    <p class="text-sm text-slate-500 mt-1">Most services completed in under 60 minutes</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="bg-yellow-100 text-yellow-600 p-2 rounded-lg mr-4">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-slate-800">Expert Team</h4>
+                                    <p class="text-sm text-slate-500 mt-1">Certified professionals with years of experience</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-12 relative">
+                            <div class="bg-blue-600/10 rounded-xl p-6">
+                                <div class="flex items-center mb-3">
+                                    <div class="bg-blue-600 text-white p-2 rounded-lg mr-3">
+                                        <i class="fas fa-percentage"></i>
+                                    </div>
+                                    <h4 class="font-bold text-slate-800">First-Time Customer?</h4>
+                                </div>
+                                <p class="text-sm text-slate-600 mb-4">Get 15% off your first service when you book online!</p>
+                                <div class="text-2xl font-bold text-blue-600">NEW15</div>
+                            </div>
+                            <div class="absolute -top-4 -right-4 bg-yellow-400 text-slate-800 px-3 py-1 rounded-full text-xs font-bold transform rotate-12">
+                                PROMO CODE
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Why Choose AutoGlow?</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">We're committed to providing the best vehicle care experience with transparent pricing and exceptional service.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center fade-in">
+                    <div class="bg-blue-100 text-blue-600 p-4 rounded-full inline-block mb-4 feature-icon">
+                        <i class="fas fa-dollar-sign text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">Transparent Pricing</h3>
+                    <p class="text-slate-600">No hidden fees. See exactly what you're paying for with our clear pricing structure.</p>
+                </div>
+                
+                <div class="text-center fade-in">
+                    <div class="bg-green-100 text-green-600 p-4 rounded-full inline-block mb-4 feature-icon">
+                        <i class="fas fa-bolt text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">Fast Service Guarantee</h3>
+                    <p class="text-slate-600">We value your time. Most services completed in under 60 minutes or it's on us.</p>
+                </div>
+                
+                <div class="text-center fade-in">
+                    <div class="bg-purple-100 text-purple-600 p-4 rounded-full inline-block mb-4 feature-icon">
+                        <i class="fas fa-recycle text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">Eco-Friendly Practices</h3>
+                    <p class="text-slate-600">We use biodegradable products and water-saving techniques to protect our planet.</p>
+                </div>
+                
+                <div class="text-center fade-in">
+                    <div class="bg-yellow-100 text-yellow-600 p-4 rounded-full inline-block mb-4 feature-icon">
+                        <i class="fas fa-award text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">Satisfaction Guaranteed</h3>
+                    <p class="text-slate-600">Not happy with the results? We'll redo the service until you're completely satisfied.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-slate-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Company Info -->
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-car-side text-2xl mr-2 gradient-text"></i>
+                        <span class="text-2xl font-bold gradient-text">AutoGlow</span>
+                    </div>
+                    <p class="text-slate-300 mb-4">Premium vehicle care services with a commitment to quality and customer satisfaction.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-slate-300 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-slate-300 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-slate-300 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-slate-300 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-slate-300 hover:text-white">Home</a></li>
+                        <li><a href="#services" class="text-slate-300 hover:text-white">Services</a></li>
+                        <li><a href="#booking" class="text-slate-300 hover:text-white">Book Now</a></li>
+                        <li><a href="#features" class="text-slate-300 hover:text-white">Why Choose Us</a></li>
+                        <li><a href="http://192.168.0.101:5177/login" class="text-slate-300 hover:text-white">Login</a></li>
+                        <li><a href="http://192.168.0.101:5177/register" class="text-slate-300 hover:text-white">Register</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Services -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Our Services</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-slate-300 hover:text-white">Car Wash</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white">Bike Wash</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white">Engine Detailing</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white">Wax & Polish</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white">Interior Cleaning</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white">Ceramic Coating</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Contact Us</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-blue-400"></i>
+                            <span class="text-slate-300">123 Auto Street, Care City, CC 12345</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone mt-1 mr-3 text-blue-400"></i>
+                            <span class="text-slate-300">+1 (555) 123-4567</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3 text-blue-400"></i>
+                            <span class="text-slate-300">info@autoglow.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-clock mt-1 mr-3 text-blue-400"></i>
+                            <span class="text-slate-300">Mon-Sun: 8:00 AM - 8:00 PM</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-700 mt-8 pt-8 text-center text-slate-400">
+                <p>&copy; 2023 AutoGlow. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Handle service card selection
+        document.querySelectorAll('.service-card').forEach(card => {
+            const checkbox = card.querySelector('input[type="checkbox"]');
+            
+            card.addEventListener('click', () => {
+                checkbox.checked = !checkbox.checked;
+                if (checkbox.checked) {
+                    card.classList.add('selected');
+                } else {
+                    card.classList.remove('selected');
+                }
+            });
+        });
+        
+        // Handle time slot selection
+        document.querySelectorAll('.time-slot').forEach(slot => {
+            const radio = slot.querySelector('input[type="radio"]');
+            
+            slot.addEventListener('click', () => {
+                // Remove selected class from all slots
+                document.querySelectorAll('.time-slot').forEach(s => {
+                    s.classList.remove('selected');
+                });
+                
+                // Add to clicked one
+                slot.classList.add('selected');
+                radio.checked = true;
+            });
+        });
+        
+        // Form submission
+        document.getElementById('bookingForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your booking! A confirmation will be sent shortly.');
+            // In a real app, you would send this data to your backend
+        });
+        
+        // Mobile menu functionality
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const closeMobileMenu = document.getElementById('closeMobileMenu');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.add('open');
+        });
+        
+        closeMobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.remove('open');
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+            });
+        });
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Fade-in animation on scroll
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const fadeInOnScroll = () => {
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', fadeInOnScroll);
+        // Initial check in case elements are already in view
+        fadeInOnScroll();
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

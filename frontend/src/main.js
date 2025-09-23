@@ -3,13 +3,10 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 
-const app = createApp(App)
-// Create pinia instance
-const pinia = createPinia()
+const app = createApp(App)      // ✅ Define the app first
+const pinia = createPinia()     // ✅ Create Pinia instance
 
-// ✅ install plugins before mount
-app.use(pinia)
+app.use(pinia)                  // ✅ Register plugins
+app.use(router)
 
-app.use(router)  
-
-app.mount('#app')
+app.mount('#app')               // ✅ Mount the app

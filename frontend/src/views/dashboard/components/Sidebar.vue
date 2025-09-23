@@ -24,7 +24,22 @@
       </ul>
     </nav>
     <div class="px-6 py-4 border-t border-white/10">
-      <button class="w-full py-2 rounded-md bg-gradient-to-r from-emerald-400 to-sapphire-500">Logout</button>
+      <button @click="handleLogout" class="w-full py-2 rounded-md bg-gradient-to-r from-emerald-400 to-sapphire-500">Logout</button>
     </div>
   </aside>
 </template>
+
+<script setup>
+import { useAuthStore } from '@/stores/auth'
+
+const authStore = useAuthStore()
+
+const handleLogout = async () => {
+  try {
+    await authStore.logout()
+    alert('You have been logged out.')
+  } catch (error) {
+    console.error('Logout failed:', error)
+  }
+}
+</script>
