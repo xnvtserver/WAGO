@@ -197,6 +197,115 @@
         .mobile-menu.open {
             transform: translateX(0);
         }
+        
+        /* Progress bar */
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 30px;
+            max-width: 100%;
+        }
+        
+        .progress-container::before {
+            content: '';
+            background-color: #e0e0e0;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 4px;
+            width: 100%;
+            z-index: 1;
+        }
+        
+        .progress-bar {
+            background-color: var(--primary);
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 4px;
+            width: 0%;
+            z-index: 2;
+            transition: 0.4s ease;
+        }
+        
+        .step-circle {
+            background-color: white;
+            border: 3px solid #e0e0e0;
+            border-radius: 50%;
+            height: 40px;
+            width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            transition: 0.4s ease;
+            font-weight: bold;
+            color: #999;
+        }
+        
+        .step-circle.active {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .step-circle.completed {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        .step-label {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #666;
+            white-space: nowrap;
+        }
+        
+        .form-step {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .form-step.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .vehicle-type-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        
+        .vehicle-type-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+        }
+        
+        .vehicle-type-card.selected {
+            border-color: var(--primary);
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+        
+        .btn-next, .btn-prev {
+            transition: all 0.3s;
+        }
+        
+        .btn-next:hover, .btn-prev:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -331,94 +440,217 @@
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Book Your Service</h2>
-                <p class="text-slate-600 max-w-2xl mx-auto">Select your service, vehicle type, and preferred time slot for a seamless booking experience.</p>
+                <p class="text-slate-600 max-w-2xl mx-auto">Follow the steps below to schedule your vehicle service with ease.</p>
             </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <!-- Booking Form -->
                 <div class="glass-card p-6 lg:p-8">
-                    <h3 class="text-xl font-semibold text-slate-800 mb-6">Please fill in the details below to schedule your service:</h3>
+                    <!-- Progress Bar -->
+                    <div class="progress-container mb-8">
+                        <div class="progress-bar" id="progressBar"></div>
+                        <div class="step-container relative">
+                            <div class="step-circle active" id="step1Circle">
+                                <span>1</span>
+                                <div class="step-label">Vehicle</div>
+                            </div>
+                        </div>
+                        <div class="step-container relative">
+                            <div class="step-circle" id="step2Circle">
+                                <span>2</span>
+                                <div class="step-label">Service</div>
+                            </div>
+                        </div>
+                        <div class="step-container relative">
+                            <div class="step-circle" id="step3Circle">
+                                <span>3</span>
+                                <div class="step-label">Time</div>
+                            </div>
+                        </div>
+                        <div class="step-container relative">
+                            <div class="step-circle" id="step4Circle">
+                                <span>4</span>
+                                <div class="step-label">Extras</div>
+                            </div>
+                        </div>
+                        <div class="step-container relative">
+                            <div class="step-circle" id="step5Circle">
+                                <span>5</span>
+                                <div class="step-label">Pickup</div>
+                            </div>
+                        </div>
+                        <div class="step-container relative">
+                            <div class="step-circle" id="step6Circle">
+                                <span>6</span>
+                                <div class="step-label">Details</div>
+                            </div>
+                        </div>
+                    </div>
                     
                     <form id="bookingForm">
-                        <!-- 1. Select Service Type -->
-                        <div class="mb-8">
-                            <h4 class="text-lg font-medium text-slate-800 mb-4 flex items-center">
-                                <span class="bg-blue-100 text-blue-600 rounded-full w-6 h-6 flex items-center justify-center mr-3">1</span>
-                                Select Service Type
-                            </h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <label class="service-card p-4 rounded-lg cursor-pointer">
-                                    <input type="checkbox" name="service" value="Exterior Wash" class="checkbox-custom mr-3">
-                                    <span class="font-medium">Exterior Wash</span>
-                                    <p class="text-sm text-slate-500 mt-1">Complete exterior cleaning</p>
-                                </label>
-                                <label class="service-card p-4 rounded-lg cursor-pointer">
-                                    <input type="checkbox" name="service" value="Interior Cleaning" class="checkbox-custom mr-3">
-                                    <span class="font-medium">Interior Cleaning</span>
-                                    <p class="text-sm text-slate-500 mt-1">Detailed interior vacuum & wipe</p>
-                                </label>
-                                <label class="service-card p-4 rounded-lg cursor-pointer">
-                                    <input type="checkbox" name="service" value="Full Wash" class="checkbox-custom mr-3">
-                                    <span class="font-medium">Full Wash</span>
-                                    <p class="text-sm text-slate-500 mt-1">Exterior + Interior complete</p>
-                                </label>
-                                <label class="service-card p-4 rounded-lg cursor-pointer">
-                                    <input type="checkbox" name="service" value="Engine Detailing" class="checkbox-custom mr-3">
-                                    <span class="font-medium">Engine Detailing</span>
-                                    <p class="text-sm text-slate-500 mt-1">Engine bay cleaning</p>
-                                </label>
-                                <label class="service-card p-4 rounded-lg cursor-pointer">
-                                    <input type="checkbox" name="service" value="Wax & Polish" class="checkbox-custom mr-3">
-                                    <span class="font-medium">Wax & Polish</span>
-                                    <p class="text-sm text-slate-500 mt-1">Premium exterior protection</p>
-                                </label>
+                        <!-- Step 1: Vehicle Type -->
+                        <div class="form-step active" id="step1">
+                            <h3 class="text-xl font-semibold text-slate-800 mb-4 flex items-center">
+                                <span class="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3">1</span>
+                                Choose Your Vehicle Type
+                            </h3>
+                            <p class="text-slate-600 mb-6">What kind of vehicle would you like to book the service for?</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <!-- Car Option -->
+                                <div class="vehicle-type-card p-4 rounded-lg text-center" data-vehicle-type="car">
+                                    <div class="bg-blue-100 text-blue-600 p-3 rounded-full inline-block mb-3">
+                                        <i class="fas fa-car text-2xl"></i>
+                                    </div>
+                                    <h4 class="font-bold text-slate-800 mb-2">🚗 Car</h4>
+                                    <p class="text-sm text-slate-500">Hatchback, Sedan, SUV, Luxury Car, Pickup/Van</p>
+                                </div>
+                                
+                                <!-- Bike Option -->
+                                <div class="vehicle-type-card p-4 rounded-lg text-center" data-vehicle-type="bike">
+                                    <div class="bg-green-100 text-green-600 p-3 rounded-full inline-block mb-3">
+                                        <i class="fas fa-motorcycle text-2xl"></i>
+                                    </div>
+                                    <h4 class="font-bold text-slate-800 mb-2">🏍️ Bike</h4>
+                                    <p class="text-sm text-slate-500">Scooter, Sports Bike, Cruiser, Dirt Bike</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Car Types (shown when Car is selected) -->
+                            <div id="carTypes" class="hidden mb-6">
+                                <h4 class="font-medium text-slate-800 mb-3">Select Car Type:</h4>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                    <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
+                                        <input type="radio" name="carType" value="Hatchback" class="radio-custom mr-3">
+                                        <span>Hatchback</span>
+                                    </label>
+                                    <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
+                                        <input type="radio" name="carType" value="Sedan" class="radio-custom mr-3">
+                                        <span>Sedan</span>
+                                    </label>
+                                    <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
+                                        <input type="radio" name="carType" value="SUV" class="radio-custom mr-3">
+                                        <span>SUV</span>
+                                    </label>
+                                    <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
+                                        <input type="radio" name="carType" value="Luxury Car" class="radio-custom mr-3">
+                                        <span>Luxury Car</span>
+                                    </label>
+                                    <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
+                                        <input type="radio" name="carType" value="Pickup/Van" class="radio-custom mr-3">
+                                        <span>Pickup/Van</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Bike Types (shown when Bike is selected) -->
+                            <div id="bikeTypes" class="hidden mb-6">
+                                <h4 class="font-medium text-slate-800 mb-3">Select Bike Type:</h4>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                    <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
+                                        <input type="radio" name="bikeType" value="Scooter" class="radio-custom mr-3">
+                                        <span>Scooter</span>
+                                    </label>
+                                    <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
+                                        <input type="radio" name="bikeType" value="Sports Bike" class="radio-custom mr-3">
+                                        <span>Sports Bike</span>
+                                    </label>
+                                    <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
+                                        <input type="radio" name="bikeType" value="Cruiser" class="radio-custom mr-3">
+                                        <span>Cruiser</span>
+                                    </label>
+                                    <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
+                                        <input type="radio" name="bikeType" value="Dirt Bike" class="radio-custom mr-3">
+                                        <span>Dirt Bike</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-end">
+                                <button type="button" class="btn-next bg-blue-600 text-white px-6 py-2 rounded-lg font-medium" id="nextStep1">Next</button>
                             </div>
                         </div>
                         
-                        <!-- 2. Choose Vehicle Type -->
-                        <div class="mb-8">
-                            <h4 class="text-lg font-medium text-slate-800 mb-4 flex items-center">
-                                <span class="bg-blue-100 text-blue-600 rounded-full w-6 h-6 flex items-center justify-center mr-3">2</span>
-                                Choose Vehicle Type
-                            </h4>
-                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
-                                    <input type="radio" name="vehicle" value="Hatchback" class="radio-custom mr-3">
-                                    <span>Hatchback</span>
-                                </label>
-                                <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
-                                    <input type="radio" name="vehicle" value="Sedan" class="radio-custom mr-3">
-                                    <span>Sedan</span>
-                                </label>
-                                <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
-                                    <input type="radio" name="vehicle" value="SUV" class="radio-custom mr-3">
-                                    <span>SUV</span>
-                                </label>
-                                <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
-                                    <input type="radio" name="vehicle" value="Luxury Car" class="radio-custom mr-3">
-                                    <span>Luxury Car</span>
-                                </label>
-                                <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
-                                    <input type="radio" name="vehicle" value="Pickup/Van" class="radio-custom mr-3">
-                                    <span>Pickup/Van</span>
-                                </label>
-                                <label class="flex items-center p-3 rounded-lg border border-slate-200 cursor-pointer">
-                                    <input type="radio" name="vehicle" value="Motorcycle" class="radio-custom mr-3">
-                                    <span>Motorcycle</span>
-                                </label>
+                        <!-- Step 2: Service Selection -->
+                        <div class="form-step" id="step2">
+                            <h3 class="text-xl font-semibold text-slate-800 mb-4 flex items-center">
+                                <span class="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3">2</span>
+                                Choose Your Service
+                            </h3>
+                            <p class="text-slate-600 mb-6">What type of wash would you like for your vehicle?</p>
+                            
+                            <!-- Car Services (shown when Car is selected) -->
+                            <div id="carServices" class="hidden">
+                                <h4 class="font-medium text-slate-800 mb-4">For Cars:</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                    <label class="service-card p-4 rounded-lg cursor-pointer">
+                                        <input type="radio" name="service" value="Exterior Wash" class="radio-custom mr-3">
+                                        <span class="font-medium">Exterior Wash</span>
+                                        <p class="text-sm text-slate-500 mt-1">Complete exterior cleaning</p>
+                                    </label>
+                                    <label class="service-card p-4 rounded-lg cursor-pointer">
+                                        <input type="radio" name="service" value="Interior Cleaning" class="radio-custom mr-3">
+                                        <span class="font-medium">Interior Cleaning</span>
+                                        <p class="text-sm text-slate-500 mt-1">Detailed interior vacuum & wipe</p>
+                                    </label>
+                                    <label class="service-card p-4 rounded-lg cursor-pointer">
+                                        <input type="radio" name="service" value="Full Wash" class="radio-custom mr-3">
+                                        <span class="font-medium">Full Wash</span>
+                                        <p class="text-sm text-slate-500 mt-1">Exterior + Interior complete</p>
+                                    </label>
+                                    <label class="service-card p-4 rounded-lg cursor-pointer">
+                                        <input type="radio" name="service" value="Engine Detailing" class="radio-custom mr-3">
+                                        <span class="font-medium">Engine Detailing</span>
+                                        <p class="text-sm text-slate-500 mt-1">Engine bay cleaning</p>
+                                    </label>
+                                    <label class="service-card p-4 rounded-lg cursor-pointer">
+                                        <input type="radio" name="service" value="Wax & Polish" class="radio-custom mr-3">
+                                        <span class="font-medium">Wax & Polish</span>
+                                        <p class="text-sm text-slate-500 mt-1">Premium exterior protection</p>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Bike Services (shown when Bike is selected) -->
+                            <div id="bikeServices" class="hidden">
+                                <h4 class="font-medium text-slate-800 mb-4">For Bikes:</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                    <label class="service-card p-4 rounded-lg cursor-pointer">
+                                        <input type="radio" name="service" value="Exterior Wash" class="radio-custom mr-3">
+                                        <span class="font-medium">Exterior Wash</span>
+                                        <p class="text-sm text-slate-500 mt-1">Complete exterior cleaning</p>
+                                    </label>
+                                    <label class="service-card p-4 rounded-lg cursor-pointer">
+                                        <input type="radio" name="service" value="Engine Detailing" class="radio-custom mr-3">
+                                        <span class="font-medium">Engine Detailing</span>
+                                        <p class="text-sm text-slate-500 mt-1">Engine cleaning and detailing</p>
+                                    </label>
+                                    <label class="service-card p-4 rounded-lg cursor-pointer">
+                                        <input type="radio" name="service" value="Full Wash" class="radio-custom mr-3">
+                                        <span class="font-medium">Full Wash</span>
+                                        <p class="text-sm text-slate-500 mt-1">Complete bike cleaning</p>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-between">
+                                <button type="button" class="btn-prev bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-medium" id="prevStep2">Previous</button>
+                                <button type="button" class="btn-next bg-blue-600 text-white px-6 py-2 rounded-lg font-medium" id="nextStep2">Next</button>
                             </div>
                         </div>
                         
-                        <!-- 3. Preferred Date & Time -->
-                        <div class="mb-8">
-                            <h4 class="text-lg font-medium text-slate-800 mb-4 flex items-center">
-                                <span class="bg-blue-100 text-blue-600 rounded-full w-6 h-6 flex items-center justify-center mr-3">3</span>
-                                Preferred Date & Time
-                            </h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Step 3: Time Slot -->
+                        <div class="form-step" id="step3">
+                            <h3 class="text-xl font-semibold text-slate-800 mb-4 flex items-center">
+                                <span class="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3">3</span>
+                                Preferred Time Slot
+                            </h3>
+                            <p class="text-slate-600 mb-6">When would you prefer your service?</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1">Date</label>
-                                    <input type="date" class="input-field w-full px-4 py-3 rounded-lg">
+                                    <input type="date" class="input-field w-full px-4 py-3 rounded-lg" id="serviceDate">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-2">Time Slot</label>
@@ -438,15 +670,59 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            <div class="flex justify-between">
+                                <button type="button" class="btn-prev bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-medium" id="prevStep3">Previous</button>
+                                <button type="button" class="btn-next bg-blue-600 text-white px-6 py-2 rounded-lg font-medium" id="nextStep3">Next</button>
+                            </div>
                         </div>
                         
-                        <!-- 4. Pickup Option -->
-                        <div class="mb-8">
-                            <h4 class="text-lg font-medium text-slate-800 mb-4 flex items-center">
-                                <span class="bg-blue-100 text-blue-600 rounded-full w-6 h-6 flex items-center justify-center mr-3">4</span>
+                        <!-- Step 4: Additional Services -->
+                        <div class="form-step" id="step4">
+                            <h3 class="text-xl font-semibold text-slate-800 mb-4 flex items-center">
+                                <span class="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3">4</span>
+                                Additional Services (Optional)
+                            </h3>
+                            <p class="text-slate-600 mb-6">Would you like to add any of the following services?</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <label class="service-card p-4 rounded-lg cursor-pointer">
+                                    <input type="checkbox" name="addon" value="Quick Cleaning" class="checkbox-custom mr-3">
+                                    <span class="font-medium">Quick Cleaning</span>
+                                    <p class="text-sm text-slate-500 mt-1">Fast exterior wash</p>
+                                </label>
+                                <label class="service-card p-4 rounded-lg cursor-pointer">
+                                    <input type="checkbox" name="addon" value="Engine Bay Cleaning" class="checkbox-custom mr-3">
+                                    <span class="font-medium">Engine Bay Cleaning</span>
+                                    <p class="text-sm text-slate-500 mt-1">For Cars/Bikes</p>
+                                </label>
+                                <label class="service-card p-4 rounded-lg cursor-pointer">
+                                    <input type="checkbox" name="addon" value="Upholstery Cleaning" class="checkbox-custom mr-3">
+                                    <span class="font-medium">Upholstery Cleaning</span>
+                                    <p class="text-sm text-slate-500 mt-1">For Cars</p>
+                                </label>
+                                <label class="service-card p-4 rounded-lg cursor-pointer">
+                                    <input type="checkbox" name="addon" value="Tire Shine" class="checkbox-custom mr-3">
+                                    <span class="font-medium">Tire Shine</span>
+                                    <p class="text-sm text-slate-500 mt-1">For Cars</p>
+                                </label>
+                            </div>
+                            
+                            <div class="flex justify-between">
+                                <button type="button" class="btn-prev bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-medium" id="prevStep4">Previous</button>
+                                <button type="button" class="btn-next bg-blue-600 text-white px-6 py-2 rounded-lg font-medium" id="nextStep4">Next</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 5: Pickup Option -->
+                        <div class="form-step" id="step5">
+                            <h3 class="text-xl font-semibold text-slate-800 mb-4 flex items-center">
+                                <span class="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3">5</span>
                                 Pickup Option
-                            </h4>
-                            <div class="space-y-3">
+                            </h3>
+                            <p class="text-slate-600 mb-6">How would you like to receive your service?</p>
+                            
+                            <div class="space-y-3 mb-6">
                                 <label class="flex items-center p-4 rounded-lg border border-slate-200 cursor-pointer">
                                     <input type="radio" name="pickup" value="Home Pickup" class="radio-custom mr-3">
                                     <div>
@@ -462,41 +738,45 @@
                                     </div>
                                 </label>
                             </div>
-                        </div>
-                        
-                        <!-- 5. Address for Service -->
-                        <div class="mb-8">
-                            <h4 class="text-lg font-medium text-slate-800 mb-4 flex items-center">
-                                <span class="bg-blue-100 text-blue-600 rounded-full w-6 h-6 flex items-center justify-center mr-3">5</span>
-                                Address for Service
-                            </h4>
-                            <textarea class="input-field w-full px-4 py-3 rounded-lg" rows="3" placeholder="Street Address, City, ZIP"></textarea>
-                        </div>
-                        
-                        <!-- 6. Contact Information -->
-                        <div class="mb-8">
-                            <h4 class="text-lg font-medium text-slate-800 mb-4 flex items-center">
-                                <span class="bg-blue-100 text-blue-600 rounded-full w-6 h-6 flex items-center justify-center mr-3">6</span>
-                                Contact Information
-                            </h4>
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Phone Number</label>
-                                    <input type="tel" class="input-field w-full px-4 py-3 rounded-lg" placeholder="+1 (___) ___-____">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
-                                    <input type="email" class="input-field w-full px-4 py-3 rounded-lg" placeholder="your@email.com">
-                                </div>
+                            
+                            <div class="flex justify-between">
+                                <button type="button" class="btn-prev bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-medium" id="prevStep5">Previous</button>
+                                <button type="button" class="btn-next bg-blue-600 text-white px-6 py-2 rounded-lg font-medium" id="nextStep5">Next</button>
                             </div>
                         </div>
                         
-                        <!-- Submit Button -->
-                        <button type="submit" class="btn-primary text-white w-full py-4 rounded-lg font-semibold flex items-center justify-center">
-                            <i class="fas fa-calendar-check mr-2"></i> Submit Booking
-                        </button>
-                        
-                        <p class="text-sm text-slate-500 mt-4 text-center">You'll receive a confirmation message shortly after booking.</p>
+                        <!-- Step 6: Contact Details -->
+                        <div class="form-step" id="step6">
+                            <h3 class="text-xl font-semibold text-slate-800 mb-4 flex items-center">
+                                <span class="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3">6</span>
+                                Provide Your Details
+                            </h3>
+                            <p class="text-slate-600 mb-6">Please share your address and contact information.</p>
+                            
+                            <div class="mb-6">
+                                <h4 class="font-medium text-slate-800 mb-4">Address for Service</h4>
+                                <textarea class="input-field w-full px-4 py-3 rounded-lg" rows="3" placeholder="Street Address, City, ZIP" id="serviceAddress"></textarea>
+                            </div>
+                            
+                            <div class="space-y-4 mb-6">
+                                <h4 class="font-medium text-slate-800">Contact Information</h4>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Phone Number</label>
+                                    <input type="tel" class="input-field w-full px-4 py-3 rounded-lg" placeholder="+1 (___) ___-____" id="phoneNumber">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
+                                    <input type="email" class="input-field w-full px-4 py-3 rounded-lg" placeholder="your@email.com" id="emailAddress">
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-between">
+                                <button type="button" class="btn-prev bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-medium" id="prevStep6">Previous</button>
+                                <button type="submit" class="btn-primary text-white px-6 py-2 rounded-lg font-semibold flex items-center justify-center">
+                                    <i class="fas fa-calendar-check mr-2"></i> Submit Booking
+                                </button>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 
@@ -645,8 +925,8 @@
                         <li><a href="#services" class="text-slate-300 hover:text-white">Services</a></li>
                         <li><a href="#booking" class="text-slate-300 hover:text-white">Book Now</a></li>
                         <li><a href="#features" class="text-slate-300 hover:text-white">Why Choose Us</a></li>
-                        <li><a href="http://192.168.0.101:5177/login" class="text-slate-300 hover:text-white">Login</a></li>
-                        <li><a href="http://192.168.0.101:5177/register" class="text-slate-300 hover:text-white">Register</a></li>
+                        <li><a href="/login" class="text-slate-300 hover:text-white">Login</a></li>
+                        <li><a href="/register" class="text-slate-300 hover:text-white">Register</a></li>
                     </ul>
                 </div>
                 
@@ -694,17 +974,144 @@
     </footer>
 
     <script>
+        // Multi-step form functionality
+        let currentStep = 1;
+        const totalSteps = 6;
+        let selectedVehicleType = null;
+        
+        // Initialize form steps
+        document.querySelectorAll('.form-step').forEach((step, index) => {
+            if (index === 0) {
+                step.classList.add('active');
+            } else {
+                step.classList.remove('active');
+            }
+        });
+        
+        // Update progress bar
+        function updateProgressBar() {
+            const progressBar = document.getElementById('progressBar');
+            const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+            
+            // Update step circles
+            for (let i = 1; i <= totalSteps; i++) {
+                const stepCircle = document.getElementById(`step${i}Circle`);
+                if (i < currentStep) {
+                    stepCircle.classList.remove('active');
+                    stepCircle.classList.add('completed');
+                } else if (i === currentStep) {
+                    stepCircle.classList.add('active');
+                    stepCircle.classList.remove('completed');
+                } else {
+                    stepCircle.classList.remove('active', 'completed');
+                }
+            }
+        }
+        
+        // Show step
+        function showStep(stepNumber) {
+            document.querySelectorAll('.form-step').forEach(step => {
+                step.classList.remove('active');
+            });
+            document.getElementById(`step${stepNumber}`).classList.add('active');
+            currentStep = stepNumber;
+            updateProgressBar();
+        }
+        
+        // Vehicle type selection
+        document.querySelectorAll('.vehicle-type-card').forEach(card => {
+            card.addEventListener('click', () => {
+                // Remove selection from all cards
+                document.querySelectorAll('.vehicle-type-card').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                
+                // Add selection to clicked card
+                card.classList.add('selected');
+                selectedVehicleType = card.getAttribute('data-vehicle-type');
+                
+                // Show appropriate vehicle types
+                if (selectedVehicleType === 'car') {
+                    document.getElementById('carTypes').classList.remove('hidden');
+                    document.getElementById('bikeTypes').classList.add('hidden');
+                } else if (selectedVehicleType === 'bike') {
+                    document.getElementById('bikeTypes').classList.remove('hidden');
+                    document.getElementById('carTypes').classList.add('hidden');
+                }
+            });
+        });
+        
+        // Next and Previous buttons
+        document.getElementById('nextStep1').addEventListener('click', () => {
+            if (selectedVehicleType) {
+                // Show appropriate services based on vehicle type
+                if (selectedVehicleType === 'car') {
+                    document.getElementById('carServices').classList.remove('hidden');
+                    document.getElementById('bikeServices').classList.add('hidden');
+                } else if (selectedVehicleType === 'bike') {
+                    document.getElementById('bikeServices').classList.remove('hidden');
+                    document.getElementById('carServices').classList.add('hidden');
+                }
+                showStep(2);
+            } else {
+                alert('Please select a vehicle type');
+            }
+        });
+        
+        document.getElementById('nextStep2').addEventListener('click', () => {
+            const serviceSelected = document.querySelector('input[name="service"]:checked');
+            if (serviceSelected) {
+                showStep(3);
+            } else {
+                alert('Please select a service');
+            }
+        });
+        
+        document.getElementById('nextStep3').addEventListener('click', () => {
+            const dateSelected = document.getElementById('serviceDate').value;
+            const timeSelected = document.querySelector('input[name="time"]:checked');
+            
+            if (dateSelected && timeSelected) {
+                showStep(4);
+            } else {
+                alert('Please select both date and time');
+            }
+        });
+        
+        document.getElementById('nextStep4').addEventListener('click', () => {
+            showStep(5);
+        });
+        
+        document.getElementById('nextStep5').addEventListener('click', () => {
+            const pickupSelected = document.querySelector('input[name="pickup"]:checked');
+            if (pickupSelected) {
+                showStep(6);
+            } else {
+                alert('Please select a pickup option');
+            }
+        });
+        
+        // Previous buttons
+        document.getElementById('prevStep2').addEventListener('click', () => showStep(1));
+        document.getElementById('prevStep3').addEventListener('click', () => showStep(2));
+        document.getElementById('prevStep4').addEventListener('click', () => showStep(3));
+        document.getElementById('prevStep5').addEventListener('click', () => showStep(4));
+        document.getElementById('prevStep6').addEventListener('click', () => showStep(5));
+        
         // Handle service card selection
         document.querySelectorAll('.service-card').forEach(card => {
-            const checkbox = card.querySelector('input[type="checkbox"]');
+            const radio = card.querySelector('input[type="radio"]');
             
             card.addEventListener('click', () => {
-                checkbox.checked = !checkbox.checked;
-                if (checkbox.checked) {
-                    card.classList.add('selected');
-                } else {
-                    card.classList.remove('selected');
-                }
+                // Remove selected class from all service cards
+                document.querySelectorAll('.service-card').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                
+                // Add to clicked one
+                card.classList.add('selected');
+                radio.checked = true;
             });
         });
         
@@ -727,8 +1134,47 @@
         // Form submission
         document.getElementById('bookingForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            alert('Thank you for your booking! A confirmation will be sent shortly.');
+            
+            // Get form data
+            const vehicleType = selectedVehicleType;
+            const vehicleSubType = selectedVehicleType === 'car' 
+                ? document.querySelector('input[name="carType"]:checked')?.value 
+                : document.querySelector('input[name="bikeType"]:checked')?.value;
+            const service = document.querySelector('input[name="service"]:checked')?.value;
+            const date = document.getElementById('serviceDate').value;
+            const time = document.querySelector('input[name="time"]:checked')?.value;
+            const addons = Array.from(document.querySelectorAll('input[name="addon"]:checked')).map(cb => cb.value);
+            const pickup = document.querySelector('input[name="pickup"]:checked')?.value;
+            const address = document.getElementById('serviceAddress').value;
+            const phone = document.getElementById('phoneNumber').value;
+            const email = document.getElementById('emailAddress').value;
+            
+            // Validate required fields
+            if (!vehicleType || !vehicleSubType || !service || !date || !time || !pickup || !address || !phone || !email) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
             // In a real app, you would send this data to your backend
+            alert('Thank you for your booking! A confirmation will be sent shortly.');
+            
+            // Reset form
+            document.getElementById('bookingForm').reset();
+            showStep(1);
+            selectedVehicleType = null;
+            document.getElementById('carTypes').classList.add('hidden');
+            document.getElementById('bikeTypes').classList.add('hidden');
+            document.getElementById('carServices').classList.add('hidden');
+            document.getElementById('bikeServices').classList.add('hidden');
+            document.querySelectorAll('.vehicle-type-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
         });
         
         // Mobile menu functionality
@@ -796,6 +1242,10 @@
                 }
             });
         });
+        
+        // Set minimum date for service date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('serviceDate').setAttribute('min', today);
     </script>
 </body>
 </html>
