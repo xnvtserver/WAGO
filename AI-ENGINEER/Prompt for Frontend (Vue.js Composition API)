@@ -1,0 +1,23 @@
+You are an expert Vue.js 3 developer using the Composition API and TailwindCSS. 
+Generate a Vue.js 3 application structure for a car/bike washing & servicing marketplace.
+
+Requirements:
+- Use Vite as the build tool.
+- Implement routing with vue-router.
+- Use Pinia for state management.
+- Authentication views: Login, Register.
+- Dashboard views for:
+   - Customer: Search nearby service shops (Google Maps integration), Book services, View bookings.
+   - Service Provider: Shop profile setup, Manage services & pricing, Manage bookings.
+- Shared components: Navbar, Sidebar, ServiceCard, BookingForm, ShopList, MapView.
+- Responsive design using Tailwind.
+- API calls should be modularized in a separate `/services/api.js` file.
+- Follow clean folder structure:
+  - /src
+    - /views
+    - /components
+    - /stores
+    - /services
+    - /router
+- Use dummy mock data for now, fetch from `/services/api.js`.
+Output complete Vue.js code scaffolding with sample components and views.

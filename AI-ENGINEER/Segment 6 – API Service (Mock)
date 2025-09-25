@@ -1,0 +1,11 @@
+You are an expert Vue.js developer. 
+Build a mock API service file `/services/api.js` that returns dummy data for now.
+
+Requirements:
+- Auth functions: login, register, logout.
+- Shops: getShops(), getShopById(), createShop().
+- Services: getServicesByShop(), createService(), updateService().
+- Bookings: createBooking(), getBookingsByCustomer(), getBookingsByProvider(), updateBookingStatus().
+
+Each should return Promise-based mock data with setTimeout to simulate async behavior.
+Output the full /services/api.js file.

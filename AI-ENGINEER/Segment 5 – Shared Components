@@ -1,0 +1,14 @@
+You are an expert Vue.js 3 developer. 
+Create shared reusable components for the marketplace.
+
+Components needed:
+- Navbar.vue → top navigation with logo and links.
+- Sidebar.vue → role-based menu (Customer: Search, Bookings; Provider: Profile, Services, Bookings).
+- ServiceCard.vue → display service name, price, description.
+- BookingForm.vue → form for booking a service (select shop, service, date/time).
+- ShopList.vue → display shops with name, rating, distance.
+- MapView.vue → placeholder map component (Google Maps integration will be added later).
+
+Use TailwindCSS for styling. 
+Make them reusable across Customer and Provider dashboards.
+Output code for these 6 components.

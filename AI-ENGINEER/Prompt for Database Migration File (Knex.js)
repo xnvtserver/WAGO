@@ -1,0 +1,51 @@
+You are an expert Knex.js migration designer. 
+Generate migration files for a car/bike washing & servicing marketplace.
+
+Tables needed:
+1. users
+   - id (PK, UUID)
+   - name
+   - email (unique)
+   - password_hash
+   - role (enum: 'customer', 'provider', 'admin')
+   - created_at, updated_at
+
+2. shops
+   - id (PK, UUID)
+   - user_id (FK → users.id, provider only)
+   - name
+   - address
+   - latitude
+   - longitude
+   - description
+   - created_at, updated_at
+
+3. services
+   - id (PK, UUID)
+   - shop_id (FK → shops.id)
+   - name
+   - description
+   - price (decimal)
+   - created_at, updated_at
+
+4. bookings
+   - id (PK, UUID)
+   - customer_id (FK → users.id)
+   - shop_id (FK → shops.id)
+   - service_id (FK → services.id)
+   - status (enum: 'pending', 'confirmed', 'completed', 'cancelled')
+   - scheduled_at (datetime)
+   - created_at, updated_at
+
+5. payments (optional for later phase)
+   - id (PK, UUID)
+   - booking_id (FK → bookings.id)
+   - amount
+   - status (enum: 'pending', 'paid', 'failed')
+   - created_at, updated_at
+
+Constraints:
+- Use UUIDs as primary keys.
+- Add indexes on foreign keys for performance.
+- Support rollback with `down()` method.
+Output Knex.js migration files with schema definitions.

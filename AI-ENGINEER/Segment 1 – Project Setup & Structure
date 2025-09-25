@@ -1,0 +1,16 @@
+You are an expert Vue.js 3 developer. 
+Scaffold a Vue 3 project using Vite, TailwindCSS, vue-router, and Pinia. 
+
+Requirements:
+- Use Composition API syntax everywhere.
+- Project folder structure:
+  /src
+    /views
+    /components
+    /stores
+    /services
+    /router
+- Add TailwindCSS base setup.
+- Configure vue-router with a placeholder Home view.
+- Configure Pinia store with a placeholder auth store.
+Output only the initial scaffolding (main.js, router/index.js, stores/auth.js, App.vue).

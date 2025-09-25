@@ -1,0 +1,13 @@
+You are an expert Vue.js 3 developer. 
+Build customer dashboard views for the marketplace.
+
+Requirements:
+- Folder: /views/customer
+- Views:
+   - SearchShops.vue → show list of nearby shops (use MapView + ShopList components).
+   - BookService.vue → form to pick shop + service + date/time (uses BookingForm component).
+   - MyBookings.vue → show list of customer’s bookings (use mock data from /services/api.js).
+- Integrate with Pinia store for bookings.
+- Use Tailwind for responsive layout.
+- Show Navbar and Sidebar (common components).
+Output the code for these 3 views + integration with shared components.

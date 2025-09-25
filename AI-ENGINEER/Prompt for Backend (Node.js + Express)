@@ -1,0 +1,27 @@
+You are an expert Node.js backend developer. 
+Generate a Node.js Express server for a car/bike washing & servicing marketplace.
+
+Requirements:
+- Use Express.js with ES modules.
+- Authentication: JWT-based login/register for Customers and Service Providers.
+- Routes:
+   - /auth/register (customer/provider)
+   - /auth/login
+   - /shops (CRUD for service providers)
+   - /services (CRUD for shop services like wash, oil change, etc.)
+   - /bookings (create, list by customer, list by provider, update status)
+- Middleware:
+   - Auth middleware for protected routes.
+   - Role-based access (customer vs provider).
+- Database: Knex.js integration (PostgreSQL or MySQL).
+- Use dotenv for environment variables.
+- Directory structure:
+   - /src
+     - /routes
+     - /controllers
+     - /models
+     - /middlewares
+     - /db
+- Add error handling and validation.
+- Export an index.js entry file to start the server.
+Output complete Node.js backend code with modular routes and controllers.
