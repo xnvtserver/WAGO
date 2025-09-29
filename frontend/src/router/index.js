@@ -29,6 +29,7 @@ const routes = [
       if (role === 'customer') return '/dashboard/user';
       if (role === 'employee' || role === 'staff') return '/dashboard/employee';
       if (role === 'admin') return '/dashboard/admin';
+      if (role === 'owner') return '/dashboard/admin';
       return '/login';
     }
   },
