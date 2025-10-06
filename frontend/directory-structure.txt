@@ -1,0 +1,37 @@
+front-end/
+├── src/
+│   ├── assets/
+│   │    └── styles/
+    │            └── dashboard.css
+│   ├── components/ // module specific components
+        └── dashboard/
+               ├── Sidebar.vue
+               ├── TopNav.vue
+               ├── StatsCards.vue
+               ├── SalesChart.vue
+               ├── ProductsChart.vue
+               ├── MultiStoreInventory.vue
+               ├── RecentOrders.vue
+               ├── InventoryAlerts.vue
+               └── AutoReplenishment.vue
+│   ├── router/
+│   │   └── 
+│   ├── stores/
+│   │   └── dashboardStore.js (Pinia store)
+│   ├── views/ // module specific vue pages
+         └──Auth/
+         └── dashboard/
+    │       └── DashboardView.vue
+    └──App.vue
+    └──main.js
+├── node_modules
+├── public
+        └──
+├──.env
+├──index.html
+├──package-lock.json
+├──package.json
+├──vite.config.js
+├──babel.config.js
+
+strictly follow the modlule based directory structure

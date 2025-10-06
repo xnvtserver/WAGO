@@ -64,79 +64,47 @@ export const login = async (req, res) => {
 
 // Register function for new users
 export const register = async (req, res) => {
-  console.log('Register request body:', req.body);
-  const {
-    fullName,         // frontend → maps to users.name
-    role,             // frontend → maps to users.role
-    department,       // frontend → maps to shops.name (shopName)
-    userId,           // frontend → maps to shops.location
-    email,
-    phone,
-    password,
-    confirmPassword,
-    acceptedTerms
-  } = req.body;
-
+  const { ownerName, shopName, email, phone, password, location } = req.body;
   const licenseFile = req.file;
 
-console.log('--- Incoming Register Data ---');
-console.log('fullName:', fullName);
-console.log('department:', department);
-console.log('email:', email);
-console.log('phone:', phone);
-console.log('password:', password);
-console.log('confirmPassword:', confirmPassword);
-console.log('userId (location):', userId);
-console.log('acceptedTerms:', acceptedTerms);
-
-
   try {
-    if (!fullName || !department || !email || !phone || !password || !userId) {
+    if (!ownerName || !shopName || !email || !phone || !password || !location) {
       return res.status(400).json({
         success: false,
         message: 'All fields are required'
       });
     }
 
-    if (password !== confirmPassword) {
-      return res.status(400).json({
-        success: false,
-        message: 'Passwords do not match'
-      });
-    }
-
     const trx = await db.transaction();
 
     try {
-      // Insert user
       const insertedUser = await trx('users').insert({
-        name: fullName,
+        name: ownerName,
         email,
         password_hash: await bcrypt.hash(password, 10),
         phone,
         license_file: licenseFile?.filename || null,
-        terms_accepted: acceptedTerms === 'true' || acceptedTerms === true,
-        role: role || 'owner'   // fallback to 'owner' if not passed
+        terms_accepted: true,
+        role: 'owner'
       }).returning('id');
 
-      // const userIdInserted = insertedUser[0].id;
+      const userId = insertedUser[0].id;
 
-      // // Insert shop
-      // const insertedShop = await trx('shops').insert({
-      //   name: department,    // shopName
-      //   location: userId,    // using userId as location
-      //   phone,
-      //   email,
-      //   owner_id: userIdInserted,
-      //   status: 'active'
-      // }).returning('id');
+      const insertedShop = await trx('shops').insert({
+        name: shopName,
+        location,
+        phone,
+        email,
+        owner_id: userId,
+        status: 'active'
+      }).returning('id');
 
-      // const shopId = insertedShop[0].id;
+      const shopId = insertedShop[0].id;
 
-      // // Self parent_shop_id
-      // await trx('shops')
-      //   .where({ id: shopId })
-      //   .update({ parent_shop_id: shopId });
+      // Now update the same record with parent_shop_id = its own id
+      await trx('shops')
+        .where({ id: shopId })
+        .update({ parent_shop_id: shopId });
 
       await trx.commit();
 
@@ -144,13 +112,19 @@ console.log('acceptedTerms:', acceptedTerms);
         success: true,
         message: 'Registration successful',
         user: {
-          // id: userIdInserted,
-          name: fullName,
+          id: userId,
+          name: ownerName,
           email,
           phone,
-          role: role || 'owner'
+          role: 'owner'
+        },
+        shop: {
+          id: shopId,
+          name: shopName,
+          location
         }
       });
+
     } catch (error) {
       await trx.rollback();
       console.error('Transaction error:', error);
@@ -174,7 +148,6 @@ console.log('acceptedTerms:', acceptedTerms);
     });
   }
 };
-
 
 // Token validation function for validating the JWT
 export const validateToken = (req, res) => {

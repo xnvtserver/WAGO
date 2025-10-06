@@ -1,0 +1,204 @@
+To match your frontend setup and database schema, I’ll help you define backend **routes and methods** for:
+
+1. **Listing all shops** for the authenticated user (filtered by `parent_shop_id`)
+2. **Updating individual shop prices** for a specific product
+3. **Batch updating prices** for all shops for a product
+4. **Optional helper route** to fetch a shop's products
+
+---
+
+// ## ✅ 1. **List Shops API (filtered by parent\_shop\_id)**
+// GET /api/shops
+router.get('/shops', async (req, res) => {
+  const userId = req.user.id; // assuming user is authenticated and req.user is populated
+
+  try {
+    const parentShopId = await db('shops')
+      .select('id')
+      .where({ owner_id: userId })
+      .first();
+
+    if (!parentShopId) return res.status(404).json({ error: 'User has no parent shop' });
+
+    const shops = await db('shops')
+      .where({ parent_shop_id: parentShopId.id })
+      .select('id', 'name', 'location', 'status');
+
+    // Optionally fetch shop prices for current product from shop_products
+    const productId = req.query.productId;
+    if (productId) {
+      const prices = await db('shop_products')
+        .whereIn('shop_id', shops.map(s => s.id))
+        .andWhere('product_id', productId);
+
+      const enriched = shops.map(shop => {
+        const priceEntry = prices.find(p => p.shop_id === shop.id) || {};
+        return {
+          ...shop,
+          retailPrice: priceEntry.retail_price || null,
+          wholesalePrice: priceEntry.wholesale_price || null,
+          lastUpdated: priceEntry.updated_at || null
+        };
+      });
+
+      return res.json(enriched);
+    }
+
+    return res.json(shops);
+  } catch (error) {
+    console.error('Error fetching shops:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ## ✅ 2. **Update Shop Price for One Shop and Product**
+// PUT /api/pricing/products/:productId/shop-price
+router.put('/pricing/products/:productId/shop-price', async (req, res) => {
+  const { productId } = req.params;
+  const { shopId, retail_price, wholesale_price } = req.body;
+
+  if (!shopId || !retail_price || !wholesale_price) {
+    return res.status(400).json({ error: 'Missing fields' });
+  }
+
+  try {
+    const existing = await db('shop_products')
+      .where({ product_id: productId, shop_id: shopId })
+      .first();
+
+    if (existing) {
+      await db('shop_products')
+        .where({ product_id: productId, shop_id: shopId })
+        .update({
+          retail_price,
+          wholesale_price,
+          updated_at: new Date()
+        });
+    } else {
+      // fallback: insert default purchase_price, stock, etc.
+      await db('shop_products').insert({
+        product_id: productId,
+        shop_id: shopId,
+        retail_price,
+        wholesale_price,
+        purchase_price: 0,
+        stock: 0,
+        sku: `${productId}-${shopId}`,
+        barcode: `${productId}-${shopId}`,
+        status: 'active',
+        created_at: new Date(),
+        updated_at: new Date()
+      });
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Failed to update shop price:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ## ✅ 3. **Batch Update Prices for All Shops**
+// PUT /api/pricing/products/:productId/shop-prices/batch
+router.put('/pricing/products/:productId/shop-prices/batch', async (req, res) => {
+  const { productId } = req.params;
+  const { retail, wholesale } = req.body;
+  const userId = req.user.id;
+
+  if (!retail || !wholesale) {
+    return res.status(400).json({ error: 'Retail and wholesale price are required' });
+  }
+
+  try {
+    const parentShop = await db('shops')
+      .select('id')
+      .where({ owner_id: userId })
+      .first();
+
+    const shops = await db('shops')
+      .where({ parent_shop_id: parentShop.id })
+      .select('id');
+
+    const shopIds = shops.map(s => s.id);
+
+    for (const shopId of shopIds) {
+      const exists = await db('shop_products')
+        .where({ shop_id: shopId, product_id: productId })
+        .first();
+
+      if (exists) {
+        await db('shop_products')
+          .where({ shop_id: shopId, product_id: productId })
+          .update({
+            retail_price: retail,
+            wholesale_price: wholesale,
+            updated_at: new Date()
+          });
+      } else {
+        await db('shop_products').insert({
+          product_id: productId,
+          shop_id: shopId,
+          retail_price: retail,
+          wholesale_price: wholesale,
+          purchase_price: 0,
+          stock: 0,
+          sku: `${productId}-${shopId}`,
+          barcode: `${productId}-${shopId}`,
+          status: 'active',
+          created_at: new Date(),
+          updated_at: new Date()
+        });
+      }
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Batch update failed:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ## 🧩 Optional: Get All Shop Products for a Product
+// GET /api/products/:productId/shop-prices
+router.get('/products/:productId/shop-prices', async (req, res) => {
+  const { productId } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const parentShop = await db('shops')
+      .select('id')
+      .where({ owner_id: userId })
+      .first();
+
+    const shops = await db('shops')
+      .where({ parent_shop_id: parentShop.id });
+
+    const prices = await db('shop_products')
+      .whereIn('shop_id', shops.map(s => s.id))
+      .andWhere('product_id', productId);
+
+    const result = shops.map(shop => {
+      const price = prices.find(p => p.shop_id === shop.id) || {};
+      return {
+        ...shop,
+        retailPrice: price.retail_price || null,
+        wholesalePrice: price.wholesale_price || null,
+        lastUpdated: price.updated_at || null
+      };
+    });
+
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
+## 🛡️ Notes
+
+* Make sure you have `req.user.id` available (use JWT middleware like `passport` or `express-jwt`).
+* Handle potential duplicates in `sku` or `barcode` as they are unique per shop.
+* Default values like `purchase_price`, `stock`, and `status` can be adjusted based on business logic.
+
+Would you like me to generate a full ExpressJS route file (`shopRoutes.js`) with all of this combined?

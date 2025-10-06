@@ -1,0 +1,22 @@
+frontend/
+├── src/
+│   ├── assets/
+│   │   └── styles/
+│   │       └── product-pricing.css
+│   ├── components/
+│   │   └── product-pricing/
+│   │       ├── ProductHeader.vue
+│   │       ├── PriceTabs.vue
+│   │       ├── BasePrice.vue
+│   │       ├── ShopPrices.vue
+│   │       ├── BulkPricing.vue
+│   │       ├── PriceHistory.vue
+│   │       └── QuickEditSidebar.vue
+│   ├── stores/
+│   │   └── productPricingStore.js
+│   ├── views/
+│   │   └── ProductPriceManagement.vue
+│   ├── App.vue
+│   └── main.js
+├── index.html
+└── package.json

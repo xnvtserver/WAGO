@@ -1,0 +1,66 @@
+# Prompt: Build a Payment System Frontend (HTML + JS) — ready to paste into an AI or give to a developer
+
+**Goal:**
+Create a secure, responsive, accessible payment checkout UI in pure HTML/CSS/JavaScript that can integrate with payment providers (Stripe, Razorpay, PayPal). The deliverable should be a ready-to-run static frontend (single-page) plus clear integration notes for backend/webhooks.
+
+---
+
+## Full prompt (detailed — paste this into an AI/developer task)
+
+> **Task:** Build a single-page payment checkout UI using HTML5, modern CSS (Flex/Grid) and vanilla JavaScript. The page must be fully responsive and accessible (WCAG AA). It will integrate with payment providers (Stripe, Razorpay, PayPal) via their client-side SDKs and call backend endpoints for server-side tokenization / order creation. **Do not** store card data on the frontend; use provider SDK/tokenization. Provide sample integration code, comments and a mock backend contract (API endpoints and payloads).
+>
+> **Required features**
+>
+> 1. Checkout form with fields: Full name, Email, Billing address (line1, city, state, zip, country), Item summary (name, qty, unit price), Order total, Promo code input, Payment method selector (Card, UPI/Netbanking where supported, Wallets).
+> 2. Card input using provider-hosted UI where possible (e.g., Stripe Elements). If provider SDK not available in the testing environment, provide a secure mock pattern that demonstrates token creation and exchange with backend.
+> 3. Client-side validation (real-time): email format, required fields, postal code format, promo code lookup (mock). Show clear inline error messages.
+> 4. Loading / progress states and success/error screens (payment succeeded, failed, pending).
+> 5. Accessibility: keyboard navigable, proper labels, ARIA roles for dynamic UI, color contrast >= WCAG AA.
+> 6. Mobile-first responsive layout with a clean modern design (card with two columns: order summary + checkout form on larger screens; stacked on mobile).
+> 7. Minimal styling but visually polished (spacing, typography, button states). Use CSS variables for easy theming.
+> 8. Demonstration mode: an option to toggle `demoMode` so the page uses mock endpoints and simulates success/failure for testing.
+> 9. Security notes: include comments and a README section that explains PCI considerations, server-side validation, use of HTTPS, CORS, and how to store webhooks secret safely.
+>
+> **Integration contract (mock backend endpoints)**
+>
+> * `POST /api/create-order` -> body `{ items: [...], customer: {...}, promoCode?: string }` returns `{ orderId, amount, currency, description }`
+> * `POST /api/create-payment-intent` -> body `{ orderId }` returns `{ clientSecret }` (for Stripe) or `{ razorpayOrderId }` for Razorpay.
+> * `POST /api/confirm-payment` -> body `{ orderId, providerPaymentId }` returns `{ status: "succeeded" | "failed" | "pending", receiptUrl? }`
+> * `POST /api/webhook` -> used by backend (describe payload & signature verification in README).
+>
+> **Deliverables**
+>
+> * `index.html`, `styles.css`, `app.js` (single-page working demo).
+> * `README.md` with setup steps, how to switch between providers, environment variables required (e.g., STRIPE_PUBLISHABLE_KEY), and server contract.
+> * Optional: small Express.js example backend stub (2–3 endpoints) illustrating how to create payment intents / orders and verify webhooks (pseudocode acceptable).
+>
+> **Acceptance criteria**
+>
+> * The checkout flow works in demo mode and visually matches the layout described.
+> * Card inputs use provider-hosted elements where mentioned and sample code shows how to exchange client token with backend.
+> * Form validates and shows accessible error feedback.
+> * README includes security & PCI guidance.
+>
+> **Extra (nice-to-have)**
+>
+> * Save card for future payments (show checkbox; explain server-side flow).
+> * Retry payment UI for failed payments.
+> * Animated success state (confetti) but optional and toggleable.
+> * Unit test hints for JS validation functions.
+>
+> **Output requested:** Create the HTML/CSS/JS files and a brief README. Include comments in code explaining where to insert real provider keys and backend URLs.
+
+---
+
+## Short prompt (if you want a compact version)
+
+> Build a responsive, accessible single-page checkout in HTML/CSS/vanilla JS integrated with Stripe/Razorpay/PayPal client SDKs. Use provider-hosted card inputs (when possible), validate inputs client-side, call backend endpoints for order/payment-intent creation, and show success/error screens. Provide `index.html`, `styles.css`, `app.js`, and a README describing backend API and PCI security best practices. Include a `demoMode` for local testing.
+
+---
+
+Would you like me to:
+
+1. Generate the actual `index.html`, `styles.css`, and `app.js` files now (demo-mode working version)? or
+2. Produce a shorter copy of the prompt tailored for a code-generation model like GitHub Copilot/ChatGPT (single-line)?
+
+Pick 1 or 2 and I’ll create it immediately.

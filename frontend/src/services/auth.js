@@ -6,7 +6,7 @@ export default {
     try {
       const API_BASE = import.meta.env.VITE_API_URL;// || 'http://localhost:3000/api/v1'
       console.log('API_BASE:', API_BASE);
-      const response = await fetch(`${API_BASE}/auth/login`, {
+      const response = await fetch(`${API_BASE}/v1/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })

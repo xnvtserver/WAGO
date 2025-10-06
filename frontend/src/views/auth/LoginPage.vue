@@ -4,7 +4,7 @@
     <!-- Illustration Section -->
     <div class="lg:w-1/2 bg-white flex items-center justify-center p-8">
       <div class="max-w-md">
-        <img src="/home/vivek/Pictures/car.png" alt="Login" class="w-full h-auto" />
+        <img src="/home/vivek/Desktop/Vivek/WORKSPACE/crs/frontend/src/assets/logo.png" alt="Login" class="w-full h-auto" />
         <h2 class="text-2xl font-bold text-gray-800 mt-6 text-center">നിങ്ങളുടെ അക്കൗണ്ടിലേക്ക് പ്രവേശിക്കുക</h2>
         <p class="text-gray-600 mt-2 text-center">ഞങ്ങളുടെ സേവനങ്ങൾ ഉപയോഗിക്കാൻ സൈൻ ഇൻ ചെയ്യുക</p>
       </div>

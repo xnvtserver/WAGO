@@ -1,0 +1,11 @@
+
+Feature 
+    Supplier should know about the low stocks for a shop
+
+
+
+Improvements 
+        Add proper error handling for 403 responses in the frontend
+        Implement loading states during API calls
+        Use Vue Router navigation guards for shop context validation
+        Consider using Axios interceptors for consistent API error handling

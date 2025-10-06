@@ -10,7 +10,7 @@ export const useAuthStore = defineStore('auth', {
     activeShop: null,
     rememberSession: false,
     permissions: [],
-    isInitialized: false, 
+    isInitialized: false
   }),
 
   actions: {
@@ -27,77 +27,64 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-setAuth({ token, user, shops, permissions, remember }) {
-  const activeShop = shops.length ? shops[0].id : null;
+    setAuth({ token, user, shops, permissions, remember }) {
+      const activeShop = shops.length ? shops[0].id : null;
 
-  this.$patch({
-    token,
-    user,
-    shops,
-    permissions,
-    activeShop,
-    rememberSession: remember
-  });
-
-  const storage = remember ? localStorage : sessionStorage;
-
-  // Clean both storages before writing
-  localStorage.removeItem('auth');
-  sessionStorage.removeItem('auth');
-
-  storage.setItem('auth', JSON.stringify({
-    token,
-    user,
-    shops,
-    permissions,
-    activeShop,
-    rememberSession: remember,
-    isAuthenticated: true,
-  }));
-
-  // ✅ Explicitly persist role for router guards
-  storage.setItem('user_role', user.role);
-},
-
-
-async initialize() {
-  if (this.isInitialized) return;
-
-  try {
-    const rawAuth = localStorage.getItem('auth') || sessionStorage.getItem('auth') || 'null';
-    const authData = JSON.parse(rawAuth);
-
-    if (authData) {
       this.$patch({
-        token: authData.token,
-        user: authData.user,
-        shops: authData.shops,
-        permissions: authData.permissions || [],
-        activeShop: authData.activeShop || authData.shops?.[0]?.id || null,
-        rememberSession: authData.rememberSession
+        token,
+        user,
+        shops,
+        permissions,
+        activeShop,
+        rememberSession: remember
       });
 
-      // ✅ restore role for router guard
-      const role = authData.user?.role;
-      if (role) {
-        const storage = authData.rememberSession ? localStorage : sessionStorage;
-        storage.setItem('user_role', role);
+      const storage = remember ? localStorage : sessionStorage;
+
+      // Clean both storages before writing
+      localStorage.removeItem('auth');
+      sessionStorage.removeItem('auth');
+
+      storage.setItem('auth', JSON.stringify({
+        token,
+        user,
+        shops,
+        permissions,
+        activeShop,
+        rememberSession: remember
+      }));
+    },
+
+    async initialize() {
+      if (this.isInitialized) return;
+
+      try {
+        const rawAuth = localStorage.getItem('auth') || sessionStorage.getItem('auth') || 'null';
+        const authData = JSON.parse(rawAuth);
+
+        if (authData) {
+          this.$patch({
+            token: authData.token,
+            user: authData.user,
+            shops: authData.shops,
+            permissions: authData.permissions || [],
+            activeShop: authData.activeShop || authData.shops?.[0]?.id || null,
+            rememberSession: authData.rememberSession
+          });
+        }
+      } catch (e) {
+        console.error('Auth initialization error:', e);
+        this.clearAuth(); // Fallback if stored data is corrupted
       }
-    }
-  } catch (e) {
-    console.error('Auth initialization error:', e);
-    this.clearAuth(); // Fallback if stored data is corrupted
-  }
 
-  this.isInitialized = true;
-},
-
+      this.isInitialized = true;
+    },
 
     async validateToken() {
       if (!this.token) return false;
 
       try {
-        await this.apiFetch('/auth/validate');
+        await this.apiFetch('/v1/auth/validate');
         return true;
       } catch (error) {
         this.clearAuth();
@@ -153,20 +140,22 @@ async initialize() {
       }
     },
 
-clearAuth() {
-  this.token = null;
-  this.user = null;
-  this.shops = [];
-  this.activeShop = null;
-  this.rememberSession = false;
-  this.permissions = [];
-  this.isInitialized = false;
+    clearAuth() {
+      this.token = null;
+      this.user = null;
+      this.shops = [];
+      this.activeShop = null;
+      this.rememberSession = false;
+      this.permissions = [];
+      this.isInitialized = false;
 
-  localStorage.removeItem('auth');
-  sessionStorage.removeItem('auth');
-  localStorage.removeItem('user_role');   // ✅ clear role
-},
-
+      localStorage.removeItem('auth');
+      sessionStorage.removeItem('auth');
+      localStorage.removeItem('authToken');
+      sessionStorage.removeItem('authToken');
+      localStorage.removeItem('user');
+      sessionStorage.removeItem('user');
+    },
     getShopId() {
       return this.activeShop || (this.shops.length ? this.shops[0].id : null);
     }

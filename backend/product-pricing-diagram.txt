@@ -1,0 +1,14 @@
+backend/
+├── config/
+│   └── db.js
+├── controllers/
+│   └── pricingController.js
+├── models/
+│   ├── ProductPrice.js
+│   └── ShopPrice.js
+├── routes/
+│   └── pricingRoutes.js
+├── middlewares/
+│   └── auth.js
+├── package.json
+└── server.js

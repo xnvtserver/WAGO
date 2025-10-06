@@ -1,0 +1,45 @@
+backend/
+├── auth/ //for auth modlule
+│   ├── controllers/
+│   │   └── auth.controller.js
+│   ├── routes/
+│   │   └── auth.routes.js
+│   ├── services/
+│   │   └── auth.service.js
+│   ├── validations/
+│   │   └── auth.validation.js
+│   ├── middleware/
+│   │   ├── auth.middleware.js
+│   │   └── error.middleware.js
+│   └── models/
+│       └── user.model.js
+│
+├── config/
+│   ├── database.js
+│   ├── storage.js
+│   └── constants.js
+│
+│
+├── middleware/
+│   ├── errorHandler.js
+│   └── requestLogger.js
+│
+│
+├── utils/
+│   ├── helpers.js
+│   └── validators.js
+├── db
+    ├── migrations // db migrations
+        ├──20240601000000_create_users.js
+    ├── seeds
+├──node_modules
+├──uploads
+├──.env
+├──knexfile.js
+├──package-lock.json
+├──package.json
+├──server.js // directly routing to the module routes for eg :const authRoutes = require('./Auth/routes/index'); app.use('/api/v1/auth', authRoutes);
+
+ 
+
+strictly follow the modlule based directory structure

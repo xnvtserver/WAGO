@@ -1,5 +1,4 @@
 <!--  front-end/src/views/auth/RegisterPage.vue -->
-<!-- front-end/src/views/auth/RegisterPage.vue -->
 <template>
   <div class="min-h-screen flex items-center justify-center p-4 bg-gray-50">
     <div class="w-full max-w-3xl">
@@ -7,9 +6,9 @@
       <div class="bg-white rounded-2xl shadow-xl flex flex-col md:flex-row">
         <!-- Left Side - Illustration -->
         <div class="md:w-1/2 bg-blue-50 rounded-l-2xl p-8 hidden md:flex flex-col justify-center">
-          <img src="/home/vivek/Pictures/car.png" alt="Car Wash" class="w-full h-64 object-contain">
-          <h3 class="text-xl font-bold text-gray-800 mt-6 text-center">നിങ്ങളുടെ ഡാറ്റ സുരക്ഷിതമാണ്</h3>
-          <p class="text-gray-600 mt-2 text-sm text-center">256-ബിറ്റ് SSL എൻക്രിപ്ഷൻ വഴി സംരക്ഷണം</p>
+          <img src="/home/vivek/Desktop/Vivek/WORKSPACE/crs/frontend/src/assets/logo.png" alt="Security" class="w-full h-64 object-contain">
+          <h3 class="text-xl font-bold text-gray-800 mt-6 text-center">നിങ്ങളുടെ വ്യക്തിഗത വിവരങ്ങൾ സുരക്ഷിതം</h3>
+          <p class="text-gray-600 mt-2 text-sm text-center">256-ബിറ്റ് SSL എൻക്രിപ്ഷൻ വഴി സുരക്ഷിതമായി</p>
         </div>
 
         <!-- Right Side - Registration Form -->
@@ -17,10 +16,10 @@
           <!-- Header -->
           <div class="text-center mb-8">
             <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <i class="fas fa-car text-white text-xl"></i>
+              <i class="fas fa-store text-white text-xl"></i>
             </div>
-            <h2 class="text-2xl font-bold text-gray-800">കാർ വാഷ് രജിസ്ട്രേഷൻ</h2>
-            <p class="text-gray-600 mt-2 text-sm">കാർ വാഷ് സെന്റർ / ജീവനക്കാർ / ഉപഭോക്തൃ രജിസ്ട്രേഷൻ ഫോം</p>
+            <h2 class="text-2xl font-bold text-gray-800">കട രജിസ്റ്റർ ചെയ്യുക</h2>
+            <p class="text-gray-600 mt-2 text-sm">നിങ്ങളുടെ കടയുടെ വിവരങ്ങൾ നൽകി രജിസ്റ്റർ ചെയ്യുക</p>
           </div>
 
           <!-- Registration Form -->
@@ -33,29 +32,36 @@
               </div>
             </div>
 
-            <!-- Basic Information -->
+            <!-- Shop Information -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <!-- Full Name -->
+              <!-- Shop Name -->
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">പൂർണ്ണ പേര്</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">കടയുടെ പേര്</label>
                 <div class="relative">
-                  <i class="fas fa-user absolute left-3 top-3 text-gray-400"></i>
-                  <input type="text" v-model="form.fullName" required
+                  <i class="fas fa-signature absolute left-3 top-3 text-gray-400"></i>
+                  <input
+                    type="text"
+                    v-model="form.shopName"
+                    required
                     class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="നിങ്ങളുടെ പേര് നൽകുക">
+                    placeholder="കടയുടെ പേര് നൽകുക"
+                  >
                 </div>
               </div>
 
-              <!-- Role -->
+              <!-- Owner Name -->
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">രജിസ്ട്രേഷൻ തരം</label>
-                <select v-model="form.role" required
-                  class="w-full pl-3 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                  <option value="">തിരഞ്ഞെടുക്കുക</option>
-                  <option value="customer">ഉപഭോക്താവ്</option>
-                  <option value="staff">ജീവനക്കാരൻ</option>
-                  <option value="owner">കാർ വാഷ് ഉടമ</option>
-                </select>
+                <label class="block text-sm font-medium text-gray-700 mb-1">ഉടമയുടെ പേര്</label>
+                <div class="relative">
+                  <i class="fas fa-user-tie absolute left-3 top-3 text-gray-400"></i>
+                  <input
+                    type="text"
+                    v-model="form.ownerName"
+                    required
+                    class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="ഉടമയുടെ പേര് നൽകുക"
+                  >
+                </div>
               </div>
             </div>
 
@@ -66,9 +72,13 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">ഇമെയിൽ</label>
                 <div class="relative">
                   <i class="fas fa-envelope absolute left-3 top-3 text-gray-400"></i>
-                  <input type="email" v-model="form.email" required
+                  <input
+                    type="email"
+                    v-model="form.email"
+                    required
                     class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="ഇമെയിൽ വിലാസം">
+                    placeholder="ഇമെയിൽ വിലാസം നൽകുക"
+                  >
                 </div>
               </div>
 
@@ -77,9 +87,13 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">ഫോൺ നമ്പർ</label>
                 <div class="relative">
                   <i class="fas fa-phone absolute left-3 top-3 text-gray-400"></i>
-                  <input type="tel" v-model="form.phone" required
+                  <input
+                    type="tel"
+                    v-model="form.phone"
+                    required
                     class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="നിങ്ങളുടെ ഫോൺ നമ്പർ">
+                    placeholder="ഫോൺ നമ്പർ നൽകുക"
+                  >
                 </div>
               </div>
             </div>
@@ -91,13 +105,34 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">പാസ്സ്‌വേഡ്</label>
                 <div class="relative">
                   <i class="fas fa-lock absolute left-3 top-3 text-gray-400"></i>
-                  <input :type="showPassword ? 'text' : 'password'" v-model="form.password" required
+                  <input
+                    :type="showPassword ? 'text' : 'password'"
+                    v-model="form.password"
+                    required
                     class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="പാസ്സ്‌വേഡ് നൽകുക" @input="checkPasswordStrength">
-                  <button type="button" @click="showPassword = !showPassword"
-                    class="absolute right-3 top-3 text-gray-400 hover:text-gray-600">
+                    placeholder="പാസ്സ്‌വേഡ് നൽകുക"
+                    @input="checkPasswordStrength"
+                  >
+                  <button
+                    type="button"
+                    @click="showPassword = !showPassword"
+                    class="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                  >
                     <i :class="showPassword ? 'fa-eye-slash' : 'fa-eye'" class="fas"></i>
                   </button>
+                </div>
+                <div class="mt-2">
+                  <div class="flex gap-1">
+                    <div 
+                      v-for="n in 4" 
+                      :key="n"
+                      class="h-1 w-full rounded-full transition-colors"
+                      :class="passwordStrength >= n ? strengthColor : 'bg-gray-200'"
+                    ></div>
+                  </div>
+                  <p class="text-xs mt-1" :class="strengthTextClass">
+                    {{ strengthText }}
+                  </p>
                 </div>
               </div>
 
@@ -106,31 +141,63 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">പാസ്സ്‌വേഡ് സ്ഥിരീകരിക്കുക</label>
                 <div class="relative">
                   <i class="fas fa-lock absolute left-3 top-3 text-gray-400"></i>
-                  <input :type="showPassword ? 'text' : 'password'" v-model="form.confirmPassword" required
+                  <input
+                    :type="showPassword ? 'text' : 'password'"
+                    v-model="form.confirmPassword"
+                    required
                     class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="പാസ്സ്‌വേഡ് വീണ്ടും നൽകുക">
+                    placeholder="പാസ്സ്‌വേഡ് വീണ്ടും നൽകുക"
+                  >
                 </div>
+              </div>
+            </div>
+
+            <!-- License Upload -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">ലൈസൻസ് ഫയൽ</label>
+              <div class="flex items-center justify-center w-full">
+                <label class="flex flex-col w-full border-2 border-dashed border-gray-300 hover:border-blue-500 rounded-lg cursor-pointer transition-colors">
+                  <div class="flex flex-col items-center justify-center py-4">
+                    <i class="fas fa-cloud-upload-alt text-2xl text-gray-400 mb-2"></i>
+                    <p class="text-sm text-gray-600">
+                      <span class="text-blue-600">ഫയൽ അപ്‌ലോഡ് ചെയ്യുക</span> അല്ലെങ്കിൽ ഡ്രാഗ് ചെയ്യുക
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1">PDF, PNG, JPG (MAX. 5MB)</p>
+                  </div>
+                  <input 
+                    type="file" 
+                    @change="handleFileUpload" 
+                    class="hidden" 
+                    accept=".pdf,.png,.jpg,.jpeg"
+                  >
+                </label>
               </div>
             </div>
 
             <!-- Terms Agreement -->
             <div class="flex items-start mt-4">
               <div class="flex items-center h-5">
-                <input id="terms" v-model="form.agreeTerms" type="checkbox"
-                  class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                <input
+                  id="terms"
+                  v-model="form.agreeTerms"
+                  type="checkbox"
+                  class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                >
               </div>
               <div class="ml-3 text-sm">
                 <label for="terms" class="font-medium text-gray-700">
-                  ഞാൻ <a href="#" class="text-blue-600 hover:text-blue-800">നിബന്ധനകളും</a>
+                  ഞാൻ <a href="#" class="text-blue-600 hover:text-blue-800">നിബന്ധനകളും</a> 
                   <a href="#" class="text-blue-600 hover:text-blue-800">സ്വകാര്യതാ നയവും</a> അംഗീകരിക്കുന്നു
                 </label>
               </div>
             </div>
 
             <!-- Submit Button -->
-            <button type="submit"
+            <button
+              type="submit"
               class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-4 rounded-lg font-medium transition-colors"
-              :disabled="loading">
+              :disabled="loading"
+            >
               <span v-if="!loading">രജിസ്റ്റർ ചെയ്യുക</span>
               <span v-else class="flex items-center justify-center">
                 <i class="fas fa-spinner fa-spin mr-2"></i> പ്രവർത്തിക്കുന്നു...
@@ -168,23 +235,20 @@
   </div>
 </template>
 
-
 <script>
 export default {
   data() {
     return {
       form: {
-        fullName: '',
-        role: '',
-        department: '',
-        userId: '', // Enrollment No / Employee ID
+        shopName: '',
+        ownerName: '',
         email: '',
         phone: '',
         password: '',
         confirmPassword: '',
-        agreeTerms: false, // ✅ keep consistent
+        agreeTerms: false,
       },
-      idFile: null,
+      licenseFile: null,
       showPassword: false,
       loading: false,
       errorMessage: '',
@@ -192,11 +256,22 @@ export default {
       passwordStrength: 0,
     };
   },
+  computed: {
+    strengthColor() {
+      return ['bg-red-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500'][this.passwordStrength - 1] || 'bg-gray-200';
+    },
+    strengthText() {
+      return ['ശക്തിയില്ല', 'മധ്യനില', 'ശക്തം', 'വളരെ ശക്തം'][this.passwordStrength - 1] || '';
+    },
+    strengthTextClass() {
+      return ['text-red-500', 'text-yellow-500', 'text-blue-500', 'text-green-600'][this.passwordStrength - 1] || '';
+    },
+  },
   methods: {
     handleFileUpload(event) {
       const file = event.target.files[0];
       if (file && file.size <= 5 * 1024 * 1024) {
-        this.idFile = file;
+        this.licenseFile = file;
       } else {
         this.errorMessage = 'ഫയൽ 5MB-ൽ കുറവായിരിക്കണം';
       }
@@ -212,75 +287,73 @@ export default {
     },
 
     async handleSubmit() {
-      this.loading = true;
-      this.errorMessage = '';
+     this.loading = true;
+     this.errorMessage = '';
+  
+  // Validate passwords match
+  if (this.form.password !== this.form.confirmPassword) {
+    this.errorMessage = 'Passwords do not match';
+    this.loading = false;
+    return;
+  }
 
-      if (this.form.password !== this.form.confirmPassword) {
-        this.errorMessage = 'Passwords do not match';
-        this.loading = false;
-        return;
-      }
+  // Validate terms agreement
+  if (!this.form.agreeTerms) {
+    this.errorMessage = 'You must agree to the terms and conditions';
+    this.loading = false;
+    return;
+  }
 
-      if (!this.form.agreeTerms) {
-        this.errorMessage = 'You must agree to the terms and conditions';
-        this.loading = false;
-        return;
-      }
-
-      try {
-        const formData = new FormData();
-        formData.append('fullName', this.form.fullName);
-        formData.append('role', this.form.role);
-        formData.append('department', this.form.department || 'Default Shop');
-        formData.append('userId', this.form.userId || 'Unknown Location');
-        formData.append('email', this.form.email);
-        formData.append('phone', this.form.phone);
-        formData.append('password', this.form.password);
-        formData.append('confirmPassword', this.form.confirmPassword);
-        formData.append('acceptedTerms', this.form.agreeTerms ? 'true' : 'false'); // ✅ fix
-
-        if (this.idFile) {
-          formData.append('licenseFile', this.idFile);
-        }
-
-        // ✅ capture response properly
-        const res = await fetch('http://localhost:8888/auth/register', {
-          method: 'POST',
-          body: formData,
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.message || 'Registration failed');
-        }
-
-        this.showSuccessModal = true;
-        setTimeout(() => {
-          this.$router.push('/login');
-        }, 2000);
-      } catch (err) {
-        console.error('Registration error:', err);
-        this.errorMessage = err.message || 'Registration failed. Please try again.';
-
-        if (err.message.includes('email')) {
-          this.errorMessage = 'Email is already registered';
-        } else if (err.message.includes('phone')) {
-          this.errorMessage = 'Phone number is already registered';
-        }
-      } finally {
-        this.loading = false;
-      }
+  try {
+    const formData = new FormData();
+    formData.append('shopName', this.form.shopName);
+    formData.append('ownerName', this.form.ownerName);
+    formData.append('email', this.form.email);
+    formData.append('phone', this.form.phone);
+    formData.append('password', this.form.password);
+    formData.append('location', this.form.location);
+    
+    if (this.licenseFile) {
+      formData.append('license', this.licenseFile); // Match backend expectation
     }
+
+    const res = await fetch('/api/v1/auth/register', {
+      method: 'POST',
+      body: formData
+    });
+
+    const data = await res.json();
+    
+    if (!res.ok) {
+      throw new Error(data.message || 'Registration failed');
+    }
+
+    this.showSuccessModal = true;
+    setTimeout(() => {
+      this.$router.push('/login');
+    }, 2000);
+  } catch (err) {
+    console.error('Registration error:', err);
+    this.errorMessage = err.message || 'Registration failed. Please try again.';
+    
+    // Handle specific error cases
+    if (err.message.includes('email')) {
+      this.errorMessage = 'Email is already registered';
+    } else if (err.message.includes('phone')) {
+      this.errorMessage = 'Phone number is already registered';
+    }
+  } finally {
+    this.loading = false;
+  }
+    }
+
   }
 }
 </script>
 
 
-
 <style scoped>
-input:focus,
-button:focus {
+input:focus, button:focus {
   outline: none;
   ring: 2px;
 }

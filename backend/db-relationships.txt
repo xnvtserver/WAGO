@@ -1,0 +1,31 @@
+
+// product is related to shop 
+// shop is owened by a owner in the user table having role = "owner"
+product_prices references products
+products references shops
+shops references users
+| Filename                  | Table created                     | Depends on |
+| ------------------------- | --------------------------------- | ---------- |
+| `001_a_users.js`          | `users`                           | —          |
+| `002_b_shops.js`          | `shops` (FK to users)             | `users`    |
+| `003_c_products.js`       | `products` (FK to shops)          | `shops`    |
+| `004_d_product_prices.js` | `product_prices` (FK to products) | `products` |
+| `005_e_promotions.js`     | `promotions` (FK to shops)        | `shops`    |
+
+5. Migration Order Fixes
+        Create tables in this order to prevent foreign key issues:
+        Create permission_type enum
+        Create users
+        Create shops
+        Create products
+        Create junction tables (shop_products, etc.)
+        Create shop_permissions
+        Create employee_profiles
+
+This include features like
+Owner registration with automatic shop creation
+Employee access management
+Shop-specific pricing and inventory
+Role-based authentication/authorization
+Secure password handling with bcrypt
+JWT-based session management

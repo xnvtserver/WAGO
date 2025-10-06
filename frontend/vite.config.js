@@ -1,44 +1,51 @@
+// vite.config.js
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
 
-// https://vitejs.dev/config/
+// ---------------------------
+// 🌐 VITE CONFIG
+// ---------------------------
+
 export default defineConfig({
   plugins: [vue()],
+
+  // ===========================
+  // 🚀 SERVER PORTS
+  // ===========================
+  // Uncomment the one you want to use:
+  // port: 3000, 4000 // production on  3000 and development on 4000
+
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@stores': path.resolve(__dirname, './src/stores')   // ✅ add this
+      '@views': path.resolve(__dirname, './src/views')
     }
   },
-    server: {
-    port: 5177,
+
+  server: {
+    //port: 5173,   // 👈 force Vite to always use 5173 in production
+    port: 5174,   // 👈 force Vite to always use 5174 in Developement 
     host: '0.0.0.0', 
 
     // ===========================
     // 🔗 PROXY SETTINGS
     // ===========================
     proxy: {
-      //   '/': {
-      //   //target: 'https://lms.xnovity.com:3000', // for production
-      //   target: 'http://localhost:4000',  // for development
-      //   changeOrigin: true,
-      //   rewrite: (path) => path
-      // },
       '/api': {
-        //target: 'https://lms.xnovity.com:3000', // for production
+        //target: 'https://crs.xnovity.com:3000', // for production
         target: 'http://192.168.0.101:4000',  // for development
         changeOrigin: true,
         rewrite: (path) => path
       },
       '/uploads': {
-      //target: 'https://lms.xnovity.com:3000', // for production
+      //target: 'https://crs.xnovity.com:3000', // for production
       target: 'http://192.168.0.101:4000',  // for development
       changeOrigin: true,
       rewrite: (path) => path,
     },
       '/static': {
-        //target: 'https://lms.xnovity.com:3000', // for production
+        //target: 'https://crs.xnovity.com:3000', // for production
         target: 'http://192.168.0.101:4000',  // for development
         changeOrigin: true,
         rewrite: (path) => path
@@ -52,9 +59,9 @@ export default defineConfig({
     allowedHosts: [
       'localhost',
       '192.168.0.101',
-      'lms.xnovity.com',
-      'http://lms.xnovity.com',
-      'https://lms.xnovity.com'
+      'crs.xnovity.com',
+      'http://crs.xnovity.com',
+      'https://crs.xnovity.com'
     ]
   }
 })

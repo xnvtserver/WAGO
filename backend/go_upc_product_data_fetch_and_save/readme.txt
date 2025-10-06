@@ -1,0 +1,1 @@
+for getProductByBarcode controller Ensure the client sends individual barcode shopId in the URL and shop-specific fields (sku, retail_price, etc.) in the body

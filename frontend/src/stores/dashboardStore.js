@@ -1,7 +1,7 @@
 //front-end/src/stores
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-// import api from '@/api';
+import api from '@/api';
 import { useAuthStore } from '@/stores/auth';
 
 export const useDashboardStore = defineStore('dashboard', () => {
@@ -37,7 +37,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
 
 async function fetchStats() {
   try {
-    // const res = await api.get('/dashboard/stats');
+    const res = await api.get('/dashboard/stats');
     stats.value = {
       todaySales: res.data.todaySales || 0,
       todayOrders: res.data.todayOrders || 0,
@@ -56,7 +56,7 @@ async function fetchStats() {
 }
 async function fetchSalesData() {
   try {
-    // const res = await api.get('/dashboard/sales');
+    const res = await api.get('/dashboard/sales');
 // In SalesChart.vue, the chart expects the backend to return data in this format:
 // [
 //   { label: "Mon", value: 1200 },
@@ -82,7 +82,7 @@ async function fetchSalesData() {
 
 async function fetchRecentOrders() {
   try {
-    // const res = await api.get('/dashboard/recent-orders');
+    const res = await api.get('/dashboard/recent-orders');
     recentOrders.value = res.data;
   } catch (error) {
     console.error('Failed to fetch recent orders:', error);
@@ -91,7 +91,7 @@ async function fetchRecentOrders() {
 
 async function fetchTopProducts() {
   try {
-// const res = await api.get('/dashboard/top-products');
+const res = await api.get('/dashboard/top-products');
    // Your frontend expects this format from the /dashboard/top-products endpoint:
     // [
       // { name: 'Wireless Earbuds', sales: 35 },
@@ -113,7 +113,7 @@ topProducts.value = res.data;
 
 async function fetchInventoryAlerts() {
   try {
-    // const res = await api.get('/dashboard/inventory-alerts');
+    const res = await api.get('/dashboard/inventory-alerts');
     inventoryAlerts.value = res.data;
   } catch (error) {
     console.error('Failed to fetch inventory alerts:', error);
@@ -122,7 +122,7 @@ async function fetchInventoryAlerts() {
 
 async function fetchStoreInventory() {
   try {
-    // const res = await api.get('/dashboard/store-inventory');
+    const res = await api.get('/dashboard/store-inventory');
     storeInventory.value = res.data;
   } catch (error) {
     console.error('Failed to fetch store inventory:', error);
