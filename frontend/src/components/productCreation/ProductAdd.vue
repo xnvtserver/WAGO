@@ -369,7 +369,7 @@ const submitForm = async () => {
 
 // FIX 5: Use nextTick in navigation
 const cancelForm = () => {
-  if (confirm('...')) {
+  if (confirm('നിങ്ങൾ റദ്ദാക്കാൻ ആഗ്രഹിക്കുന്നുവോ? എല്ലാ മാറ്റങ്ങളും നഷ്ടപ്പെടും.')) {
     resetForm();
     router.push({ name: 'Products' }); // Removed nextTick
   }
