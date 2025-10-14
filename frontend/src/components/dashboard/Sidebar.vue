@@ -14,7 +14,7 @@
     <img :src="logo" alt="Company Logo" class="w-full h-full object-contain" />
   </div>
 
-  <span v-if="!collapsed" class="logo-text ml-3 font-bold text-xl">വ്യാപാര നടത്തിപ്പ്</span>
+  <span v-if="!collapsed" class="logo-text ml-3 font-bold text-xl">CAR-SERVICING</span>
 </div>
 
 

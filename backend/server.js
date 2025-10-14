@@ -31,7 +31,7 @@ import transferProducts from './utility/transferProductsBetweenShops.js'
 const app = express();
 
 // Configuration
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 5000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // Create upload directory if it doesn't exist
@@ -76,12 +76,10 @@ app.use((req, res, next) => {
 
 // prot 5173 is for production and 5174 is for development
 const allowedOrigins = [
-  'http://localhost:5173',// production server
-  'http://localhost:5174',// development server
-  'http://192.168.0.101:5173',
-  'http://192.168.0.101:5174',
-  'http://crs.xnovity.com',
-  'https://crs.xnovity.com'
+  'http://localhost:5175',// development server
+  'http://192.168.0.101:5175',
+  'http://carwash.xnovity.com',
+  'https://carwash.xnovity.com'
 ];
 
 app.use(cors({

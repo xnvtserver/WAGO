@@ -24,8 +24,7 @@ export default defineConfig({
   },
 
   server: {
-    //port: 5173,   // 👈 force Vite to always use 5173 in production
-    port: 5174,   // 👈 force Vite to always use 5174 in Developement 
+    port: 5175,   // 👈 force Vite to always use 5174 in Developement 
     host: '0.0.0.0', 
 
     // ===========================
@@ -33,20 +32,20 @@ export default defineConfig({
     // ===========================
     proxy: {
       '/api': {
-        //target: 'https://crs.xnovity.com:3000', // for production
-        target: 'http://192.168.0.101:4000',  // for development
+        
+        target: 'http://192.168.0.101:5000',  // for development
         changeOrigin: true,
         rewrite: (path) => path
       },
       '/uploads': {
-      //target: 'https://crs.xnovity.com:3000', // for production
-      target: 'http://192.168.0.101:4000',  // for development
+      
+      target: 'http://192.168.0.101:5000',  // for development
       changeOrigin: true,
       rewrite: (path) => path,
     },
       '/static': {
-        //target: 'https://crs.xnovity.com:3000', // for production
-        target: 'http://192.168.0.101:4000',  // for development
+        
+        target: 'http://192.168.0.101:5000',  // for development
         changeOrigin: true,
         rewrite: (path) => path
       }
@@ -59,9 +58,9 @@ export default defineConfig({
     allowedHosts: [
       'localhost',
       '192.168.0.101',
-      'crs.xnovity.com',
-      'http://crs.xnovity.com',
-      'https://crs.xnovity.com'
+      'carwash.xnovity.com',
+      'http://carwash.xnovity.com',
+      'https://carwash.xnovity.com'
     ]
   }
 })

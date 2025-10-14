@@ -6,7 +6,7 @@
       <div class="bg-white rounded-2xl shadow-xl flex flex-col md:flex-row">
         <!-- Left Side - Illustration -->
         <div class="md:w-1/2 bg-blue-50 rounded-l-2xl p-8 hidden md:flex flex-col justify-center">
-          <img src="/home/vivek/Desktop/Vivek/WORKSPACE/crs/frontend/src/assets/logo.png" alt="Security" class="w-full h-64 object-contain">
+          <img src="/home/vivek/Desktop/Vivek/WORKSPACE/CARWASH/frontend/src/assets/logo.png" alt="Security" class="w-full h-64 object-contain">
           <h3 class="text-xl font-bold text-gray-800 mt-6 text-center">നിങ്ങളുടെ വ്യക്തിഗത വിവരങ്ങൾ സുരക്ഷിതം</h3>
           <p class="text-gray-600 mt-2 text-sm text-center">256-ബിറ്റ് SSL എൻക്രിപ്ഷൻ വഴി സുരക്ഷിതമായി</p>
         </div>
