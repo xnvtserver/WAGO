@@ -1,5 +1,5 @@
 <template>
-  <Modal title="പർച്ചേസ് ഓർഡർ സൃഷ്ടിക്കുക" @close="closeModal">
+  <Modal title="പർച്ചേസ് ഓർഡർ ചേർക്കുക" @close="closeModal">
     <form @submit.prevent="createPO" class="bg-white p-6 rounded-lg shadow-md space-y-6">
       <h2 class="text-2xl font-bold text-gray-800 mb-4">📝 പർച്ചേസ് ഓർഡർ ഫോം</h2>
 

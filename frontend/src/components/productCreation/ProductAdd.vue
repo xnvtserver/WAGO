@@ -23,7 +23,7 @@
             </div>
             <div v-else class="w-10 h-10 rounded-full bg-gray-200 animate-pulse mr-3"></div>
             <div>
-              <h1 class="text-2xl font-bold text-gray-800">പുതിയ ഉൽപ്പന്നം സൃഷ്ടിക്കുക</h1>
+              <h1 class="text-2xl font-bold text-gray-800">പുതിയ ഉൽപ്പന്നം ചേർക്കുക</h1>
               <p class="text-sm text-gray-500" v-if="activeShopDetails?.name">ഷോപ്പ്: {{ activeShopDetails.name }}</p>
               <p class="text-sm text-gray-300" v-else>ഷോപ്പ് തിരഞ്ഞെടുത്തിട്ടില്ല</p>
             </div>
