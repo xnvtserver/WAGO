@@ -112,6 +112,7 @@ onBeforeUnmount(() => {
 });
 const shopId = useAuthStore.user?.shop_id; //shopid
 const operationsLinks = [
+  { path: '/service-booking', icon: 'fas fa-tools', label: 'സർവീസ് ബുക്കിംഗ്' },
   { path: '/billing', icon: 'fas fa-cash-register', label: 'ബിൽ തയ്യാറാക്കൽ' },
   { path: '/products/add', icon: 'fas fa-plus-square', label: 'ഉൽപ്പന്നം ചേർക്കുക' },
   // { path: '/product-price', icon: 'fas fa-rupee-sign', label: 'വില നിയന്ത്രണം ' },

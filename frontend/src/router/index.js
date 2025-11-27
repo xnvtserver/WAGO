@@ -145,6 +145,11 @@ const routes = [
   component: () => import('../components/Generic/Low-stock-shop-products-table.vue')
 },
   {
+  path: '/service-booking',
+  name: 'service-booking',
+  component: () => import('../components/service-booking/index.vue')
+},
+  {
   path: '/purchaseOrder',
   name: 'purchaseOrder',
   component: () => import('../purchase_orders/PurchaseOrder.vue')
